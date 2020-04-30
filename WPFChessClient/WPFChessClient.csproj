@@ -59,19 +59,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Logic\Bishop.cs" />
-    <Compile Include="Logic\Copyer.cs" />
-    <Compile Include="Logic\Figure.cs" />
-    <Compile Include="Logic\FigureMoving.cs" />
-    <Compile Include="Logic\FiguresStartPosition.cs" />
-    <Compile Include="Logic\King.cs" />
-    <Compile Include="Logic\Knight.cs" />
-    <Compile Include="Logic\Move.cs" />
-    <Compile Include="Logic\Pawn.cs" />
+    <Compile Include="Logic\Figures\Bishop.cs" />
+    <Compile Include="Logic\Figures\Copyer.cs" />
+    <Compile Include="Logic\Figures\Figure.cs" />
+    <Compile Include="Logic\FigureMoving\FigureMoving.cs" />
+    <Compile Include="Logic\Figures\FiguresStartPosition.cs" />
+    <Compile Include="Logic\Figures\King.cs" />
+    <Compile Include="Logic\Figures\Knight.cs" />
+    <Compile Include="Structures\Move.cs" />
+    <Compile Include="Logic\Figures\Pawn.cs" />
     <Compile Include="Logic\Player.cs" />
-    <Compile Include="Logic\Presenter.cs" />
-    <Compile Include="Logic\Queen.cs" />
-    <Compile Include="Logic\Rook.cs" />
+    <Compile Include="Logic\Presenter\Presenter.cs" />
+    <Compile Include="Logic\Figures\Queen.cs" />
+    <Compile Include="Logic\Figures\Rook.cs" />
     <Compile Include="Structures\BoardDimensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

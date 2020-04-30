@@ -11,10 +11,9 @@ namespace WPFChessClient.Logic
 {
     static class FiguresStartPosition
     {
-        public static Figure[,] Board;
-        public static Figure[,] GetFiguresInStartPosition()
+        public static Figure[,] GetFiguresStartPosition()
         {
-            Board = new Figure[BoardDimensions.CellCount, BoardDimensions.CellCount];
+            Figure[,] Board = new Figure[BoardDimensions.CellCount, BoardDimensions.CellCount];
 
             for (int i = 0; i < BoardDimensions.CellCount; i++) 
             {
