@@ -10,8 +10,18 @@ namespace WPFChessClient.Logic
     {
         public static Figure[,] GetCopy(Figure[,] array)
         {
-            Figure[,] figures = new Figure[8, 8];
-            figures = array;
+            int height = array.GetLength(0);
+            int width = array.GetLength(1);
+            Figure[,] figures = new Figure[height, width];
+            //for (int i = 0; i < height; i++)
+            //{
+            //    for (int j = 0; j < width; j++)
+            //    {
+            //        Figure figure = new
+            //    }
+            //}
+
+            Array.Copy(array, figures, array.Length);
             return figures;
         }
     }

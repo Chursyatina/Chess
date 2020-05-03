@@ -9,11 +9,31 @@
       Title="GamePlayPage">
 
     <Grid>
-        <DockPanel LastChildFill="True">
+        <!--<DockPanel LastChildFill="True">
+            <TextBlock Width="200" DockPanel.Dock="Left"></TextBlock>
+            <TextBlock Width="200" DockPanel.Dock="Right"></TextBlock>
             <Button Name="QuitToMainMenu" Click="QuitToMainMenu_Click" DockPanel.Dock="Bottom">Quit to main menu</Button>
-            <Canvas Background="White" Name="GameCanvas" SizeChanged="GameCanvas_SizeChanged" 
+            <Canvas Background="Red" Name="GameCanvas" SizeChanged="GameCanvas_SizeChanged" 
                     ClipToBounds="True" MouseLeftButtonDown="GameCanvas_MouseLeftButtonDown" 
                     MouseLeftButtonUp="GameCanvas_MouseLeftButtonUp"/>
-        </DockPanel>
+        </DockPanel>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Canvas Name="GameCanvas" SizeChanged="GameCanvas_SizeChanged" 
+                    ClipToBounds="True" MouseLeftButtonDown="GameCanvas_MouseLeftButtonDown" 
+                    MouseLeftButtonUp="GameCanvas_MouseLeftButtonUp" Grid.Column="1"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2">
+            <TextBlock Padding="15" Margin="20 10 0 10" FontSize="27">05:43</TextBlock>
+            <TextBlock Padding="15" Margin="20 10 0 10" FontSize="27">05:40</TextBlock>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0">
+            <TextBlock Padding="15"  FontSize="60" HorizontalAlignment="Center">Мат</TextBlock>
+            <TextBlock Padding="15"  FontSize="26" HorizontalAlignment="Center">Победа чёрных</TextBlock>
+        </StackPanel>
+
     </Grid>
 </Page>

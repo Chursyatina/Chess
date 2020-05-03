@@ -36,6 +36,7 @@ namespace WPFChessClient
             InitializeComponent();
             CreatePages();
             ChangePage(this, new ChangePageArgs(NamePage.MainMenu));
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         }
 
         private void CreatePages()

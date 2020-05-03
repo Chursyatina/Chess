@@ -14,8 +14,6 @@ namespace WPFChessClient.Logic
 
         private Move LastMove;
 
-        private Point EatenFigurePosition;
-
         private List<Figure> BlackEatenFigures;
 
         private List<Figure> WhiteEatenFigures;
@@ -25,30 +23,45 @@ namespace WPFChessClient.Logic
             LogicBoard = logicBoard;
             BlackEatenFigures = new List<Figure>();
             WhiteEatenFigures = new List<Figure>();
-            EatenFigurePosition = new Point(-1, -1);
         }
         //---------------------------------------------------------------------------------------------------------------------------Получение возможных ходов
-        public List<Point> GetPossibleMoves(Point position, Player currentPlayer, Player unabledPlayer)
+        public List<Point> GetPossibleMoves(Point position, Player currentPlayer, Player unabledPlayer, Figure[,] board)
         {
             List<Point> validMoves;
-            validMoves = LogicBoard[(int)position.Y, (int)position.X].GetPossibleMoves(position);
-            validMoves = FindValidMoves(position, validMoves, currentPlayer);
+            validMoves = board[(int)position.Y, (int)position.X].GetPossibleMoves(position);
+            validMoves = FindValidMoves(position, validMoves, currentPlayer, board);
+            if (currentPlayer.GetCheckInfo())
+            {
+                validMoves = CheckShahExists(validMoves, position, currentPlayer, unabledPlayer, board);
+                if (validMoves.Count == 0)
+                {
+                    // to do MATE
+                }
+            }
+
+            validMoves = CheckShahExists(validMoves, position, currentPlayer, unabledPlayer, board);
+            currentPlayer.RemoveCheck();
+
+            if (validMoves.Count == 0)
+            {
+                // to do STALEMATE
+            }
 
             return validMoves;
         }
 
-        private List<Point> FindValidMoves(Point position, List<Point> possibleMoves, Player currentPlayer)
+        private List<Point> FindValidMoves(Point position, List<Point> possibleMoves, Player currentPlayer, Figure[,] board)
         {
             List<Point> validMoves;
             validMoves = DeleteAbroadMoves(possibleMoves);
 
-            validMoves = DeleteFrienlyPositionMoves(validMoves, position);
+            validMoves = DeleteFrienlyPositionMoves(validMoves, position, board);
 
-            validMoves = EditPawnsMoves(validMoves, position);
+            validMoves = EditPawnsMoves(validMoves, position, board);
 
-            validMoves = DeleteFencedOffMovesSecondVariant(validMoves, position);
+            validMoves = DeleteFencedOffMovesSecondVariant(validMoves, position, board);
 
-            validMoves = CheckCastle(validMoves, position, currentPlayer);
+            validMoves = CheckCastle(validMoves, position, currentPlayer, board);
 
             return validMoves;
         }
@@ -66,13 +79,13 @@ namespace WPFChessClient.Logic
             return clearedList;
         }
 
-        private List<Point> DeleteFrienlyPositionMoves(List<Point> possibleMoves, Point position)
+        private List<Point> DeleteFrienlyPositionMoves(List<Point> possibleMoves, Point position, Figure[,] board)
         {
             List<Point> validMoves = new List<Point>();
             foreach (Point move in possibleMoves)
             {
-                Figure selectedFigure = LogicBoard[(int)position.Y, (int)position.X];
-                Figure moveFigure = LogicBoard[(int)move.Y, (int)move.X];
+                Figure selectedFigure = board[(int)position.Y, (int)position.X];
+                Figure moveFigure = board[(int)move.Y, (int)move.X];
 
                 if (moveFigure == null ||
                     moveFigure != null && moveFigure.Color != selectedFigure.Color)
@@ -83,9 +96,9 @@ namespace WPFChessClient.Logic
             return validMoves;
         }
 
-        private List<Point> DeleteFencedOffMovesSecondVariant(List<Point> possibleMoves, Point position)
+        private List<Point> DeleteFencedOffMovesSecondVariant(List<Point> possibleMoves, Point position, Figure[,] board)
         {
-            if (LogicBoard[(int)position.Y, (int)position.X].GetType() == Figures.Knight)
+            if (board[(int)position.Y, (int)position.X].GetType() == Figures.Knight)
             {
                 return possibleMoves;
             }
@@ -97,7 +110,7 @@ namespace WPFChessClient.Logic
 
                 while (position != currentMove)
                 {
-                    if (LogicBoard[(int)currentMove.Y, (int)currentMove.X] != null && currentMove != move)
+                    if (board[(int)currentMove.Y, (int)currentMove.X] != null && currentMove != move)
                     {
                         foundFigure = true;
                     }
@@ -116,16 +129,16 @@ namespace WPFChessClient.Logic
             return validMoves;
         }
 
-        private List<Point> EditPawnsMoves(List<Point> possibleMoves, Point position)
+        private List<Point> EditPawnsMoves(List<Point> possibleMoves, Point position, Figure[,] board)
         {
             List<Point> validMoves = new List<Point>();
-            if (LogicBoard[(int)position.Y, (int)position.X].GetType() == Figures.Pawn)
+            if (board[(int)position.Y, (int)position.X].GetType() == Figures.Pawn)
             {
                 foreach (Point move in possibleMoves)
                 {
-                    if (Math.Abs(move.Y - position.Y) == 2 && LogicBoard[(int)move.Y,(int)move.X] == null)
+                    if (Math.Abs(move.Y - position.Y) == 2 && board[(int)move.Y, (int)move.X] == null)
                     {
-                        if (CheckBrokenFieldMove(position))
+                        if (CheckBrokenFieldMove(position, board))
                         {
                             validMoves.Add(move);
                         }
@@ -133,17 +146,17 @@ namespace WPFChessClient.Logic
                     }
                     if (Math.Abs(move.X - position.X) == 1)
                     {
-                        if (CheckPawnsTakeFigure(position, move))
+                        if (CheckPawnsTakeFigure(position, move, board))
                         {
                             validMoves.Add(move);
                         }
-                        if (CheckEnPassant(position, move))
+                        if (CheckEnPassant(position, move, board))
                         {
                             validMoves.Add(move);
                         }
                         continue;
                     }
-                    if (LogicBoard[(int)move.Y, (int)move.X] != null)
+                    if (board[(int)move.Y, (int)move.X] != null)
                     {
                         continue;
                     }
@@ -157,12 +170,12 @@ namespace WPFChessClient.Logic
             }
         }
 
-        private bool CheckBrokenFieldMove(Point position)
+        private bool CheckBrokenFieldMove(Point position, Figure[,] board)
         {
             Figure[,] startPosition = FiguresStartPosition.GetFiguresStartPosition();
             if (startPosition[(int)position.Y, (int)position.X] != null &&
-                startPosition[(int)position.Y, (int)position.X].Color == LogicBoard[(int)position.Y, (int)position.X].Color &&
-                LogicBoard[(int)position.Y, (int)position.X].GetType() == startPosition[(int)position.Y, (int)position.X].GetType())
+                startPosition[(int)position.Y, (int)position.X].Color == board[(int)position.Y, (int)position.X].Color &&
+                board[(int)position.Y, (int)position.X].GetType() == startPosition[(int)position.Y, (int)position.X].GetType())
             {
                 return true;
             }
@@ -172,25 +185,24 @@ namespace WPFChessClient.Logic
             }
         }
 
-        private bool CheckPawnsTakeFigure(Point position, Point move)
+        private bool CheckPawnsTakeFigure(Point position, Point move, Figure[,] board)
         {
-            if (LogicBoard[(int)move.Y, (int)move.X] != null &&
-                LogicBoard[(int)position.Y, (int)position.X].Color != LogicBoard[(int)move.Y, (int)move.X].Color)
+            if (board[(int)move.Y, (int)move.X] != null &&
+                board[(int)position.Y, (int)position.X].Color != board[(int)move.Y, (int)move.X].Color)
             {
                 return true;
             }
             return false;
         }
 
-        private bool CheckEnPassant(Point position, Point move)
+        private bool CheckEnPassant(Point position, Point move, Figure[,] board)
         {
-            if (LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X] != null &&
-                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X].Color != LogicBoard[(int)position.Y, (int)position.X].Color &&
-                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X].GetType() == Figures.Pawn &&
+            if (board[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X] != null &&
+                board[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X].Color != board[(int)position.Y, (int)position.X].Color &&
+                board[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X].GetType() == Figures.Pawn &&
                 move.Y == ((LastMove.EndPosition.Y > LastMove.StartPosition.Y) ? LastMove.StartPosition.Y + 1 : LastMove.EndPosition.Y + 1) &&
                 move.X == LastMove.EndPosition.X)
             {
-                EatenFigurePosition = LastMove.EndPosition;
                 return true;
             }
             else
@@ -199,24 +211,24 @@ namespace WPFChessClient.Logic
             }
         }
 
-        private List<Point> CheckCastle(List<Point> possibleMoves, Point position, Player currentPlayer)
+        private List<Point> CheckCastle(List<Point> possibleMoves, Point position, Player currentPlayer, Figure[,] board)
         {
             List<Point> validMoves = new List<Point>();
             foreach (Point move in possibleMoves)
             {
-                if (LogicBoard[(int)position.Y, (int)position.X].GetType() == Figures.King)
+                if (board[(int)position.Y, (int)position.X].GetType() == Figures.King)
                 {
                     if (currentPlayer.GetLongCastleAbility() &&
                         Math.Abs(move.X - position.X) == 2 &&
-                        LogicBoard[(int)move.Y, (int)move.X - 1] == null &&
-                        LogicBoard[(int)move.Y, (int)move.X + 1] == null)
+                        board[(int)move.Y, (int)move.X - 1] == null &&
+                        board[(int)move.Y, (int)move.X + 1] == null)
                     {
                         validMoves.Add(move);
                     }
                     if (currentPlayer.GetShortCastleAbility() &&
                        Math.Abs(move.X - position.X) == 2 &&
-                       (LogicBoard[(int)move.Y, (int)move.X - 1] == null || LogicBoard[(int)move.Y, (int)move.X - 1].GetType() == Figures.Rook) &&
-                       (LogicBoard[(int)move.Y, (int)move.X + 1] == null || LogicBoard[(int)move.Y, (int)move.X + 1].GetType() == Figures.Rook))
+                       (board[(int)move.Y, (int)move.X - 1] == null || board[(int)move.Y, (int)move.X - 1].GetType() == Figures.Rook) &&
+                       (board[(int)move.Y, (int)move.X + 1] == null || board[(int)move.Y, (int)move.X + 1].GetType() == Figures.Rook))
                     {
                         validMoves.Add(move);
                     }
@@ -233,8 +245,24 @@ namespace WPFChessClient.Logic
             return validMoves;
         }
 
+        private List<Point> CheckShahExists(List<Point> possibleMoves, Point position, Player checkPlayer, Player secondPlayer, Figure[,] board)
+        {
+            List<Point> validMoves = new List<Point>();
+            foreach (Point move in possibleMoves)
+            {
+                Figure[,] possibleBoard = Copyer.GetCopy(board);
+                possibleBoard[(int)move.Y, (int)move.X] = possibleBoard[(int)position.Y, (int)position.X];
+                possibleBoard[(int)position.Y, (int)position.X] = null;
+                if (!CheckShah(possibleBoard, checkPlayer, secondPlayer))
+                {
+                    validMoves.Add(move);
+                }
+            }
+            return validMoves;
+        }
+
         // ---------------------------------------------------------------------------------------------------------------------------Ход
-        public Figure[,] MakeMove(Point startPosition, Point endPosition, Player currentPlayer, Player unabledPlayer)
+        public Figure[,] MakeMove(Point startPosition, Point endPosition, Player currentPlayer, Player uncurrentPlayer)
         {
             LastMove.SetStartPosition(startPosition);
             LastMove.SetEndPosition(endPosition);
@@ -251,6 +279,10 @@ namespace WPFChessClient.Logic
             CheckEnPassantMove();
 
             ChangeFigurePosition(startPosition, endPosition);
+
+            CheckShah(Copyer.GetCopy(LogicBoard), uncurrentPlayer, currentPlayer);
+
+            currentPlayer.RemoveCheck();
 
             return LogicBoard;
         }
@@ -358,5 +390,33 @@ namespace WPFChessClient.Logic
         }
         // -----------------------------------------------------------------------------------------------------------------------------
 
+        public bool CheckShah(Figure[,] board, Player checkPlayer, Player secondPlayer)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[j, i] != null &&
+                        board[j, i].Color != checkPlayer.GetFigureColor())
+                    {
+                        List<Point> possibleFigureMoves = board[j, i].GetPossibleMoves(new Point(i, j));
+                        possibleFigureMoves = FindValidMoves(new Point(i, j), possibleFigureMoves, secondPlayer, board);
+                        foreach (Point move in possibleFigureMoves)
+                        {
+                            if (board[(int)move.Y, (int)move.X] != null &&
+                                board[(int)move.Y, (int)move.X].GetType() == Figures.King &&
+                                board[(int)move.Y, (int)move.X].Color == checkPlayer.GetFigureColor())
+                            {
+                                checkPlayer.GiveCheck();
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
     }
 }
+// ОБЯЗУЮ РАБОТАТЬ

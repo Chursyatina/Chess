@@ -152,7 +152,9 @@
   <ItemGroup>
     <Resource Include="Resources\H.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Маэстро.jpg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Figures\bB.png" />
     <Resource Include="Resources\Figures\bK.png" />
@@ -166,6 +168,9 @@
     <Resource Include="Resources\Figures\wP.png" />
     <Resource Include="Resources\Figures\wQ.png" />
     <Resource Include="Resources\Figures\wR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Table.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

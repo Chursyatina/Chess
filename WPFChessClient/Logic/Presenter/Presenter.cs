@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using WPFChessClient.Pages;
 using WPFChessClient.Structures;
 using static WPFChessClient.Pages.GamePlayPage;
@@ -21,7 +22,7 @@ namespace WPFChessClient.Logic
 
         private Point SelectedFigurePosition;
 
-        private FigureMoving figureMoving;
+        private FigureMoving FigureMoving;
 
         private Player FirstPlayer;
 
@@ -33,20 +34,32 @@ namespace WPFChessClient.Logic
 
         private Move LastMove;
 
+        private DispatcherTimer Timer;
+
+        private int PlayerTime;
         public Presenter(GamePlayPage gameplayPage)
         {
             Page = gameplayPage;
             Board = FiguresStartPosition.GetFiguresStartPosition();
             EditedCells = new List<Point>();
-            SelectedFigurePosition = new Point(-1,-1);
-            figureMoving = new FigureMoving(Board);
-            FirstPlayer = new Player(FiguresColor.white);
-            SecondPlayer = new Player(FiguresColor.black);
+            SelectedFigurePosition = new Point(-1, -1);
+            FigureMoving = new FigureMoving(Board);
+            PlayerTime = 15 * 60;
+            FirstPlayer = new Player(FiguresColor.white, PlayerTime);
+            SecondPlayer = new Player(FiguresColor.black, PlayerTime);
             CurrentPlayer = FirstPlayer;
             UnabledPlayer = SecondPlayer;
             LastMove.SetStartPosition(new Point(0, 0));
             LastMove.SetEndPosition(new Point(0, 0));
             LastMove.SetFigure(Figures.Pawn);
+            Timer = new DispatcherTimer();
+            Timer.Interval = new TimeSpan(10000000);
+            Timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            CurrentPlayer.ReduceTime();
         }
 
         public void ClickedOnBoard(Point coordCell)
@@ -56,7 +69,7 @@ namespace WPFChessClient.Logic
             {
                 if (CheckMovingPossibility(coordCell))
                 {
-                    Board = figureMoving.MakeMove(SelectedFigurePosition, coordCell, CurrentPlayer, UnabledPlayer);
+                    Board = FigureMoving.MakeMove(SelectedFigurePosition, coordCell, CurrentPlayer, UnabledPlayer);
 
                     ChangePlayer();
                     SelectedFigurePosition = new Point(-1, -1);
@@ -70,7 +83,7 @@ namespace WPFChessClient.Logic
             {
                 if (coordCell.Y >= 0 && coordCell.Y < 8 &&
                     coordCell.X >= 0 && coordCell.X < 8 &&
-                    Board[(int)coordCell.Y, (int)coordCell.X] != null && 
+                    Board[(int)coordCell.Y, (int)coordCell.X] != null &&
                     Board[(int)coordCell.Y, (int)coordCell.X].Color == CurrentPlayer.GetFigureColor())
                 {
                     SelectedFigurePosition = coordCell;
@@ -130,7 +143,7 @@ namespace WPFChessClient.Logic
             }
             else
             {
-                EditedCells = figureMoving.GetPossibleMoves(SelectedFigurePosition, CurrentPlayer, UnabledPlayer);
+                EditedCells = FigureMoving.GetPossibleMoves(SelectedFigurePosition, CurrentPlayer, UnabledPlayer, Copyer.GetCopy(Board));
             }
         }
 

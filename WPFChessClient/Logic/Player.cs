@@ -2,25 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Threading;
 using static WPFChessClient.Pages.GamePlayPage;
 
 namespace WPFChessClient.Logic
 {
     class Player
     {
-        FiguresColor MyFigureColor;
+        private FiguresColor MyFigureColor;
 
-        bool ShortCastleAbility;
-        bool LongCastleAbility;
-        bool isCheck;
+        private bool ShortCastleAbility;
+        private bool LongCastleAbility;
+        private bool isCheck;
 
-        public Player(FiguresColor color)
+        private int Time;
+
+        public Player(FiguresColor color, int time)
         {
             MyFigureColor = color;
             ShortCastleAbility = true;
             LongCastleAbility = true;
             isCheck = false;
+            Time = time;
+        }
+
+        public void ReduceTime()
+        {
+            Time -= 1;
         }
 
         public FiguresColor GetFigureColor()

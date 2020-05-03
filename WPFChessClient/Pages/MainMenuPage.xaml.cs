@@ -38,5 +38,15 @@ namespace WPFChessClient.Pages
         {
             PageChanged.Invoke(this, new ChangePageArgs(NamePage.GamePlay));
         }
+
+        private void StartMultiplayerGame_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
