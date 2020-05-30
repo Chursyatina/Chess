@@ -27,6 +27,8 @@ namespace WPFChessClient.Pages
             InitializeComponent();
         }
 
+        private MainWindow MainWindow;
+
         public event EventHandler<IPageArgs> PageChanged;
 
         public void Start()
@@ -41,7 +43,8 @@ namespace WPFChessClient.Pages
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow = MainWindow.GetInstance();
+            MainWindow.Close();
         }
 
         private void StartOnePlayerGame_Click(object sender, RoutedEventArgs e)

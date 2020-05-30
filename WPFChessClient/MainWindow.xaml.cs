@@ -29,12 +29,20 @@ namespace WPFChessClient
     {
         private Dictionary<NamePage, IPageChanger> Pages;
 
+        private static MainWindow Instance;
+
         public MainWindow()
         {
             InitializeComponent();
             CreatePages();
             ChangePage(this, new ChangePageArgs(NamePage.MainMenu));
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+            Instance = this;
+        }
+
+        public static MainWindow GetInstance()
+        {
+            return Instance;
         }
 
         private void CreatePages()

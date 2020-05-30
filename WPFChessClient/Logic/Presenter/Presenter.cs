@@ -39,6 +39,10 @@ namespace WPFChessClient.Logic
 
         private int PlayerTime;
 
+        private bool MatchEnded = false;
+
+        private bool FirstMove = true;
+
         public Presenter(GamePlayPage gameplayPage, int time)
         {
             Page = gameplayPage;
@@ -46,7 +50,7 @@ namespace WPFChessClient.Logic
             EditedCells = new List<Point>();
             SelectedFigurePosition = new Point(-1, -1);
             FigureMoving = new FigureMoving(Board);
-            PlayerTime = time;
+            PlayerTime = time * 60;
             FirstPlayer = new Player(FiguresColor.white, PlayerTime);
             SecondPlayer = new Player(FiguresColor.black, PlayerTime);
             FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
@@ -96,30 +100,38 @@ namespace WPFChessClient.Logic
 
         public void ClickedOnBoard(Point coordCell)
         {
-            Console.WriteLine(coordCell);
-            if (SelectedFigurePosition != new Point(-1, -1))
-            {
-                if (CheckMovingPossibility(coordCell))
-                {
-                    Board = FigureMoving.MakeMove(SelectedFigurePosition, coordCell, CurrentPlayer, UnabledPlayer);
 
-                    ChangePlayer();
-                    Timer.Start();
-                    SelectedFigurePosition = new Point(-1, -1);
+            Console.WriteLine(coordCell);
+            if (!MatchEnded)
+            {
+                if (SelectedFigurePosition != new Point(-1, -1))
+                {
+                    if (CheckMovingPossibility(coordCell))
+                    {
+                        Board = FigureMoving.MakeMove(SelectedFigurePosition, coordCell, CurrentPlayer, UnabledPlayer);
+
+                        ChangePlayer();
+                        if (FirstMove)
+                        {
+                            Timer.Start();
+                            FirstMove = false;
+                        }
+                        SelectedFigurePosition = new Point(-1, -1);
+                    }
+                    else
+                    {
+                        SelectedFigurePosition = new Point(-1, -1);
+                    }
                 }
                 else
                 {
-                    SelectedFigurePosition = new Point(-1, -1);
-                }
-            }
-            else
-            {
-                if (coordCell.Y >= 0 && coordCell.Y < 8 &&
-                    coordCell.X >= 0 && coordCell.X < 8 &&
-                    Board[(int)coordCell.Y, (int)coordCell.X] != null &&
-                    Board[(int)coordCell.Y, (int)coordCell.X].Color == CurrentPlayer.GetFigureColor())
-                {
-                    SelectedFigurePosition = coordCell;
+                    if (coordCell.Y >= 0 && coordCell.Y < 8 &&
+                        coordCell.X >= 0 && coordCell.X < 8 &&
+                        Board[(int)coordCell.Y, (int)coordCell.X] != null &&
+                        Board[(int)coordCell.Y, (int)coordCell.X].Color == CurrentPlayer.GetFigureColor())
+                    {
+                        SelectedFigurePosition = coordCell;
+                    }
                 }
             }
             CanvasUpdated();
@@ -211,6 +223,7 @@ namespace WPFChessClient.Logic
         {
             Page.SetMoveResult(result.MoveResult, result.Attacker);
             Timer.Stop();
+            MatchEnded = true;
         }
     }
 }

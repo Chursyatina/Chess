@@ -10,13 +10,18 @@ namespace WPFChessClient.Logic
 {
     public abstract class Figure
     {
-        public Figures Name { get; private set; }
-        public FiguresColor Color { get; private set; }
+        public Figures Name { get; set; }
+        public FiguresColor Color { get;  set; }
 
         public Figure(Figures name, FiguresColor color)
         {
             Name = name;
             Color = color;
+        }
+
+        public Figure()
+        {
+
         }
 
         public abstract List<Point> GetPossibleMoves(Point position);
