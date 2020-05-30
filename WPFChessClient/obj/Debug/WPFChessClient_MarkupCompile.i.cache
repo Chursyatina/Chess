@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\App.xaml
-3-1867181739
+4-1272530012
 
-24373973074
+28-775144297
 141183416626
-MainWindow.xaml;Pages\GamePlayPage.xaml;Pages\MainMenuPage.xaml;
+MainWindow.xaml;Pages\GamePlayPage.xaml;Pages\GameStartingPage.xaml;Pages\MainMenuPage.xaml;
 
-True
+False
 

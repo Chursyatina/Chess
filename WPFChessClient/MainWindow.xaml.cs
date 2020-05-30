@@ -18,13 +18,11 @@ using WPFChessClient.Pages;
 
 namespace WPFChessClient
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public enum NamePage
     {
         GamePlay,
-        MainMenu
+        MainMenu,
+        StartigGamePage
     }
 
     public partial class MainWindow : Window
@@ -44,6 +42,7 @@ namespace WPFChessClient
             Pages = new Dictionary<NamePage, IPageChanger>();
             Pages.Add(NamePage.GamePlay, new GamePlayPage());
             Pages.Add(NamePage.MainMenu, new MainMenuPage());
+            Pages.Add(NamePage.StartigGamePage, new GameStartingPage());
 
             foreach(KeyValuePair<NamePage, IPageChanger> page in Pages)
             {
@@ -51,8 +50,12 @@ namespace WPFChessClient
             }
         }
 
-        private void ChangePage(object sender, ChangePageArgs e)
+        private void ChangePage(object sender, IPageArgs e)
         {
+            if (e is ChangePageToGameArgs && Pages[e.Name] is GamePlayPage)
+            {
+                ((GamePlayPage)Pages[e.Name]).SetData(((ChangePageToGameArgs)e).FirstPlayerName, ((ChangePageToGameArgs)e).SecondPlayerName, ((ChangePageToGameArgs)e).GameTime);
+            }
             Pages[e.Name].Start();
             MainFrame.Navigate(Pages[e.Name]);
         }

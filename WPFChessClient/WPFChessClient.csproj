@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EventArgsClasses\ChangePageToGameArgs.cs" />
+    <Compile Include="EventArgsClasses\GameResultArgs.cs" />
+    <Compile Include="Interfaces\IPageArgs.cs" />
     <Compile Include="Logic\Figures\Bishop.cs" />
     <Compile Include="Logic\Figures\Copyer.cs" />
     <Compile Include="Logic\Figures\Figure.cs" />
@@ -66,6 +69,9 @@
     <Compile Include="Logic\Figures\FiguresStartPosition.cs" />
     <Compile Include="Logic\Figures\King.cs" />
     <Compile Include="Logic\Figures\Knight.cs" />
+    <Compile Include="Pages\GameStartingPage.xaml.cs">
+      <DependentUpon>GameStartingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Structures\Move.cs" />
     <Compile Include="Logic\Figures\Pawn.cs" />
     <Compile Include="Logic\Player.cs" />
@@ -88,6 +94,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\GamePlayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GameStartingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

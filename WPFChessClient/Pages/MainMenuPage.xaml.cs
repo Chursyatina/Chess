@@ -27,16 +27,11 @@ namespace WPFChessClient.Pages
             InitializeComponent();
         }
 
-        public event EventHandler<ChangePageArgs> PageChanged;
+        public event EventHandler<IPageArgs> PageChanged;
 
         public void Start()
         {
            
-        }
-
-        private void StartGamePlay_Click(object sender, RoutedEventArgs e)
-        {
-            PageChanged.Invoke(this, new ChangePageArgs(NamePage.GamePlay));
         }
 
         private void StartMultiplayerGame_Click(object sender, RoutedEventArgs e)
@@ -47,6 +42,11 @@ namespace WPFChessClient.Pages
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void StartOnePlayerGame_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.StartigGamePage));
         }
     }
 }

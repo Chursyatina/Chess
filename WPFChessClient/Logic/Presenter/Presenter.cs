@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using WPFChessClient.EventArgsClasses;
 using WPFChessClient.Pages;
 using WPFChessClient.Structures;
 using static WPFChessClient.Pages.GamePlayPage;
@@ -37,16 +38,19 @@ namespace WPFChessClient.Logic
         private DispatcherTimer Timer;
 
         private int PlayerTime;
-        public Presenter(GamePlayPage gameplayPage)
+
+        public Presenter(GamePlayPage gameplayPage, int time)
         {
             Page = gameplayPage;
             Board = FiguresStartPosition.GetFiguresStartPosition();
             EditedCells = new List<Point>();
             SelectedFigurePosition = new Point(-1, -1);
             FigureMoving = new FigureMoving(Board);
-            PlayerTime = 15 * 60;
+            PlayerTime = time;
             FirstPlayer = new Player(FiguresColor.white, PlayerTime);
             SecondPlayer = new Player(FiguresColor.black, PlayerTime);
+            FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
+            SecondPlayer.TimeIsUp += SecondPlayer_TimeIsUp;   
             CurrentPlayer = FirstPlayer;
             UnabledPlayer = SecondPlayer;
             LastMove.SetStartPosition(new Point(0, 0));
@@ -55,11 +59,39 @@ namespace WPFChessClient.Logic
             Timer = new DispatcherTimer();
             Timer.Interval = new TimeSpan(10000000);
             Timer.Tick += Timer_Tick;
+            FigureMoving.MoveDone += ReactMoveResult;
+            Page.SetTextTimerFirst(TimeToString(CurrentPlayer.Time));
+            Page.SetTextTimerSecond(TimeToString(CurrentPlayer.Time));
+        }
+
+        private void FirstPlayer_TimeIsUp(object sender, EventArgs e)
+        {
+            Page.SetTimesUpResult(CurrentPlayer);
+            Timer.Stop();
+        }
+
+        private void SecondPlayer_TimeIsUp(object sender, EventArgs e)
+        {
+            Page.SetTimesUpResult(CurrentPlayer);
+            Timer.Stop();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            CurrentPlayer.ReduceTime();
+            CurrentPlayer.Time -= 1;
+            if (CurrentPlayer == FirstPlayer)
+            {
+                Page.SetTextTimerFirst(TimeToString(CurrentPlayer.Time));
+            }
+            else
+            {
+                Page.SetTextTimerSecond(TimeToString(CurrentPlayer.Time));
+            }
+        }
+
+        private String TimeToString(int time)
+        {
+            return String.Format("{0:00}:{1:00}", time / 60, time % 60);
         }
 
         public void ClickedOnBoard(Point coordCell)
@@ -72,6 +104,7 @@ namespace WPFChessClient.Logic
                     Board = FigureMoving.MakeMove(SelectedFigurePosition, coordCell, CurrentPlayer, UnabledPlayer);
 
                     ChangePlayer();
+                    Timer.Start();
                     SelectedFigurePosition = new Point(-1, -1);
                 }
                 else
@@ -171,6 +204,13 @@ namespace WPFChessClient.Logic
                 CurrentPlayer = FirstPlayer;
                 UnabledPlayer = SecondPlayer;
             }
+            Page.ChangeActiveBackgroung();
+        }
+
+        private void ReactMoveResult(object sender, GameResultArgs result)
+        {
+            Page.SetMoveResult(result.MoveResult, result.Attacker);
+            Timer.Stop();
         }
     }
 }

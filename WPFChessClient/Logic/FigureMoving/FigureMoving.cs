@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFChessClient.EventArgsClasses;
 using static WPFChessClient.Pages.GamePlayPage;
 
 namespace WPFChessClient.Logic
@@ -17,6 +18,8 @@ namespace WPFChessClient.Logic
         private List<Figure> BlackEatenFigures;
 
         private List<Figure> WhiteEatenFigures;
+
+        public event EventHandler<GameResultArgs> MoveDone;
         // -------------------------------------------------------------------------------------------------------------------------Конструктор
         public FigureMoving(Figure[,] logicBoard)
         {
@@ -30,22 +33,7 @@ namespace WPFChessClient.Logic
             List<Point> validMoves;
             validMoves = board[(int)position.Y, (int)position.X].GetPossibleMoves(position);
             validMoves = FindValidMoves(position, validMoves, currentPlayer, board);
-            if (currentPlayer.GetCheckInfo())
-            {
-                validMoves = CheckShahExists(validMoves, position, currentPlayer, unabledPlayer, board);
-                if (validMoves.Count == 0)
-                {
-                    // to do MATE
-                }
-            }
-
             validMoves = CheckShahExists(validMoves, position, currentPlayer, unabledPlayer, board);
-            currentPlayer.RemoveCheck();
-
-            if (validMoves.Count == 0)
-            {
-                // to do STALEMATE
-            }
 
             return validMoves;
         }
@@ -255,6 +243,7 @@ namespace WPFChessClient.Logic
                 possibleBoard[(int)position.Y, (int)position.X] = null;
                 if (!CheckShah(possibleBoard, checkPlayer, secondPlayer))
                 {
+                    checkPlayer.RemoveCheck();
                     validMoves.Add(move);
                 }
             }
@@ -283,6 +272,25 @@ namespace WPFChessClient.Logic
             CheckShah(Copyer.GetCopy(LogicBoard), uncurrentPlayer, currentPlayer);
 
             currentPlayer.RemoveCheck();
+
+            if (uncurrentPlayer.GetCheckInfo())
+            {
+                if (CheckForLackOfMoves(Copyer.GetCopy(LogicBoard), uncurrentPlayer, currentPlayer))
+                {
+                    if (uncurrentPlayer.GetCheckInfo())
+                    {
+                        GameResultArgs mate = new GameResultArgs(MoveResult.CheckMate, currentPlayer);
+                        MoveDone.Invoke(this, mate);
+                        return LogicBoard;
+                    }
+                    else
+                    {
+                        GameResultArgs staleMate = new GameResultArgs(MoveResult.StaleMate, currentPlayer);
+                        MoveDone.Invoke(this, staleMate);
+                        return LogicBoard;
+                    }
+                }
+            }
 
             return LogicBoard;
         }
@@ -388,6 +396,8 @@ namespace WPFChessClient.Logic
                 RemoveEatenFigure(new Point(LastMove.EndPosition.X, LastMove.StartPosition.Y));
             }
         }
+
+        
         // -----------------------------------------------------------------------------------------------------------------------------
 
         public bool CheckShah(Figure[,] board, Player checkPlayer, Player secondPlayer)
@@ -416,6 +426,39 @@ namespace WPFChessClient.Logic
             }
             return false;
         }
+
+        public bool CheckForLackOfMoves(Figure [,] board, Player checkPlayer, Player secondPlayer)
+        {
+            List<Point> allPossibleMoves = new List<Point>();
+            List<Point> checkedFigurePossibleMoves = new List<Point>();
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[j, i] != null &&
+                        board[j, i].Color == checkPlayer.GetFigureColor())
+                    {
+                        checkedFigurePossibleMoves = FindValidMoves(new Point(i, j),
+                            board[j, i].GetPossibleMoves(new Point(i, j)),
+                            checkPlayer,
+                            board);
+                        checkedFigurePossibleMoves = CheckShahExists(checkedFigurePossibleMoves, new Point(i, j), checkPlayer, secondPlayer, board);
+                        allPossibleMoves.AddRange(checkedFigurePossibleMoves);
+                    }
+                }
+            }
+            if (allPossibleMoves.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // -----------------------------------------------------------------------------------------------------------------------------
 
     }
 }

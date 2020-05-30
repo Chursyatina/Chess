@@ -10,7 +10,7 @@
 
     <Grid>
         <StackPanel Width="300" Height="300">
-            <Button x:Name="StartOnePlayerGame" Click="StartGamePlay_Click"  Padding="10" Content="Start One Player Game" Margin="30"/>
+            <Button x:Name="StartOnePlayerGame" Click="StartOnePlayerGame_Click"  Padding="10" Content="Start One Player Game" Margin="30"/>
             <Button x:Name="StartMultiplayerGame" Click="StartMultiplayerGame_Click" Padding="10" Content="Start Multiplayer Game" Margin="30" />
             <Button x:Name="Exit" Click="Exit_Click"  Padding="10" Content="Exit" Margin="30"/>
         </StackPanel>

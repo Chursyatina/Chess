@@ -22,18 +22,31 @@
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Canvas Name="GameCanvas" SizeChanged="GameCanvas_SizeChanged" 
                     ClipToBounds="True" MouseLeftButtonDown="GameCanvas_MouseLeftButtonDown" 
-                    MouseLeftButtonUp="GameCanvas_MouseLeftButtonUp" Grid.Column="1"/>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2">
-            <TextBlock Padding="15" Margin="20 10 0 10" FontSize="27">05:43</TextBlock>
-            <TextBlock Padding="15" Margin="20 10 0 10" FontSize="27">05:40</TextBlock>
+                    MouseLeftButtonUp="GameCanvas_MouseLeftButtonUp" Grid.Column="1" Grid.RowSpan="3" />
+        
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="1" >
+            <TextBlock Name="TextBlockTimerSecond" Padding="15" Margin="20 10 0 10" FontSize="27"></TextBlock>
+            <TextBlock Name="TextBlockTimerFirst" Padding="15" Margin="20 10 0 10" FontSize="27"></TextBlock>
         </StackPanel>
 
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0">
-            <TextBlock Padding="15"  FontSize="60" HorizontalAlignment="Center">Мат</TextBlock>
-            <TextBlock Padding="15"  FontSize="26" HorizontalAlignment="Center">Победа чёрных</TextBlock>
+
+        <TextBlock Name="TextBlockFirstPlayerName" FontSize="30" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Margin="20 10 0 10"></TextBlock>
+        <TextBlock Name="TextBlockSecondPlayerName" FontSize="30" Grid.Column="2" Grid.Row="0" VerticalAlignment="Bottom" Margin="20 10 0 10"></TextBlock>
+        
+
+
+        <StackPanel Grid.Column="0" Grid.Row="1">
+            <TextBlock Name="TextBlockGameResult" Padding="15"  FontSize="60" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock Name="TextBlockWinner" Padding="15"  FontSize="26" HorizontalAlignment="Center" ></TextBlock>
         </StackPanel>
+
 
     </Grid>
 </Page>

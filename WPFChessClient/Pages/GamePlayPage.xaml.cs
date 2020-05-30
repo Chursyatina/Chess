@@ -28,6 +28,7 @@ namespace WPFChessClient.Pages
     {
         public enum Figures { King, Queen, Bishop, Knight, Rook, Pawn }
         public enum FiguresColor { white, black }
+        public enum MoveResult { Check, CheckMate, StaleMate}
 
         Dictionary<char, ImageSource> BoardDisignations;
 
@@ -62,10 +63,25 @@ namespace WPFChessClient.Pages
             BlackFigures = BlackDictionaryFilling();
             WhiteFigures = WhiteDictionaryFilling();
 
-            Presenter = new Presenter(this);
+            //Presenter = new Presenter(this, Time);
+            TextBlockTimerFirst.Background = Brushes.White;
         }
 
-        public event EventHandler<ChangePageArgs> PageChanged;
+        public event EventHandler<IPageArgs> PageChanged;
+
+        private string FirstPlayerName;
+        private string SecondPlayerName;
+        private int Time;
+
+        public void SetData(string firstPlayerName, string secondPlayerName, int time)
+        {
+            FirstPlayerName = firstPlayerName;
+            SecondPlayerName = secondPlayerName;
+            Time = time;
+            Presenter = new Presenter(this, Time);
+            SetTextFirstPlayerName(FirstPlayerName);
+            SetTextSecondPlayerName(SecondPlayerName);
+        }
 
         public void Start()
         {
@@ -319,6 +335,117 @@ namespace WPFChessClient.Pages
                                  dimensions.PlayBoard.Y + dimensions.CellSide * (cellPosition.Y),
                                  dimensions.CellSide, dimensions.CellSide);
             Drawable.Add(GetRectangle(rect, CheckCellType));
+        }
+
+        public void SetTextTimerFirst(String text)
+        {
+            if (IsWhite)
+            {
+                TextBlockTimerFirst.Text = text;
+            }
+            else
+            {
+                TextBlockTimerSecond.Text = text;
+            }
+        }
+
+        public void SetTextTimerSecond(String text)
+        {
+            if (IsWhite)
+            {
+                TextBlockTimerSecond.Text = text;
+            }
+            else
+            {
+                TextBlockTimerFirst.Text = text;
+            }
+        }
+
+        public void SetTextFirstPlayerName(String text)
+        {
+            if (IsWhite)
+            {
+                TextBlockFirstPlayerName.Text = text;
+            }
+            else
+            {
+                TextBlockFirstPlayerName.Text = text;
+            }
+        }
+        public void SetTextSecondPlayerName(String text)
+        {
+            if (IsWhite)
+            {
+                TextBlockSecondPlayerName.Text = text;
+            }
+            else
+            {
+                TextBlockSecondPlayerName.Text = text;
+            }
+        }
+
+        public void ChangeActiveBackgroung()
+        {
+            if (TextBlockTimerFirst.Background == Brushes.White)
+            {
+                TextBlockTimerSecond.Background = Brushes.White;
+                TextBlockTimerFirst.Background = Brushes.Transparent;
+            }
+            else
+            {
+                TextBlockTimerSecond.Background = Brushes.Transparent;
+                TextBlockTimerFirst.Background = Brushes.White;
+            }
+        }
+
+        public void SetMoveResult(MoveResult result, Player attacker)
+        {
+            switch (result)
+            {
+                case MoveResult.CheckMate:
+                    SetTextGameResult("Мат");
+                    if (attacker.GetFigureColor() == FiguresColor.black)
+                        SetTextAttacker("Победа чёрных");
+                    else SetTextAttacker("Победа белых");
+                    break;
+                case MoveResult.StaleMate:
+                    SetTextGameResult("Пат");
+                    if (attacker.GetFigureColor() == FiguresColor.black)
+                        SetTextAttacker("Победа чёрных");
+                    else SetTextAttacker("Победа белых");
+                    break;
+                case MoveResult.Check:
+                    SetTextGameResult("Шах");
+                    if (attacker.GetFigureColor() == FiguresColor.black)
+                        SetTextAttacker("Белым");
+                    else SetTextAttacker("Чёрным");
+                    break;
+            }
+        }
+
+        public void SetTimesUpResult(Player looser)
+        {
+            switch (looser.GetFigureColor())
+            {
+                case FiguresColor.black:
+                    SetTextGameResult("Время");
+                    SetTextAttacker("Победа белых");
+                    break;
+                case FiguresColor.white:
+                    SetTextGameResult("Время");
+                    SetTextAttacker("Победа чёрных");
+                    break;
+            }
+        }
+
+        public void SetTextGameResult(String text)
+        {
+            TextBlockGameResult.Text = text;
+        }
+
+        public void SetTextAttacker(String text)
+        {
+            TextBlockWinner.Text = text;
         }
 
         private Point GetBoardCoordinate(Point position)

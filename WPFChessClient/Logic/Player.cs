@@ -7,15 +7,29 @@ using static WPFChessClient.Pages.GamePlayPage;
 
 namespace WPFChessClient.Logic
 {
-    class Player
+    public class Player
     {
+        public event EventHandler<EventArgs> TimeIsUp;
+
         private FiguresColor MyFigureColor;
 
         private bool ShortCastleAbility;
         private bool LongCastleAbility;
         private bool isCheck;
 
-        private int Time;
+        private int time;
+        public int Time
+        {
+            get
+            {
+                return time;
+            }
+            set
+            {
+                time = value;
+                if (time <= 0) TimeIsUp.Invoke(this, new EventArgs());
+            }
+        }
 
         public Player(FiguresColor color, int time)
         {
@@ -24,11 +38,6 @@ namespace WPFChessClient.Logic
             LongCastleAbility = true;
             isCheck = false;
             Time = time;
-        }
-
-        public void ReduceTime()
-        {
-            Time -= 1;
         }
 
         public FiguresColor GetFigureColor()

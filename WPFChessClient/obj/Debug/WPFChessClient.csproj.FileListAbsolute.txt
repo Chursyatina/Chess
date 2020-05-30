@@ -36,3 +36,5 @@ C:\Университет\Программирование\OffProd\Chess\WPFChes
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.csproj.CoreCompileInputs.cache
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.exe
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.pdb
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\GameStartingPage.g.cs
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\GameStartingPage.baml
