@@ -8,7 +8,7 @@ using static WPFChessClient.Pages.GamePlayPage;
 
 namespace WPFChessClient.EventArgsClasses
 {
-    class GameResultArgs
+    public class GameResultArgs
     {
         public MoveResult MoveResult;
 

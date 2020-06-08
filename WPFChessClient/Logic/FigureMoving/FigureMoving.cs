@@ -326,7 +326,7 @@ namespace WPFChessClient.Logic
                 (LastMove.EndPosition.Y == 7 || LastMove.EndPosition.Y == 0))
             {
                 LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X] =
-                    new Queen(Figures.Queen, LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X].Color);
+                    new Queen(Figures.Queen, LogicBoard[(int)LastMove.StartPosition.Y, (int)LastMove.StartPosition.X].Color);
             }
         }
 

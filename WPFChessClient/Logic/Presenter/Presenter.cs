@@ -46,6 +46,8 @@ namespace WPFChessClient.Logic
 
         private bool FirstMove = true;
 
+        public event EventHandler<SaveGameArgs> SavePressed;
+
         public Presenter(GamePlayPage gameplayPage, int time)
         {
             Page = gameplayPage;
@@ -67,8 +69,10 @@ namespace WPFChessClient.Logic
             Timer.Interval = new TimeSpan(10000000);
             Timer.Tick += Timer_Tick;
             FigureMoving.MoveDone += ReactMoveResult;
+            Page.SurrenderPresed += ReactSurrender;
             Page.SetTextTimerFirst(TimeToString(CurrentPlayer.Time));
             Page.SetTextTimerSecond(TimeToString(CurrentPlayer.Time));
+            SavePressed += SaveGame;
             Saver = new Saver(Page.FirstPlayerName,Page.SecondPlayerName,Page.Time);
         }
 
@@ -226,6 +230,7 @@ namespace WPFChessClient.Logic
                 UnabledPlayer = SecondPlayer;
             }
             Page.ChangeActiveBackgroung();
+            Page.ChangeSurrenderVisibility();
         }
 
         private void ReactMoveResult(object sender, GameResultArgs result)
@@ -234,11 +239,29 @@ namespace WPFChessClient.Logic
             Timer.Stop();
             MakeMatchEnded();
         }
+
+        private void ReactSurrender(object sender, GameResultArgs result)
+        {
+            Page.SetMoveResult(result.MoveResult, result.Attacker);
+            Timer.Stop();
+            MakeMatchEnded();
+        }
+
         private void MakeMatchEnded()
         {
             MatchEnded = true;
             Saver.SaveEndedGame(FirstPlayer,SecondPlayer);
             Page.MakeExitVisible();
+        }
+
+        public void ReactOmGameSaving()
+        {
+            SavePressed.Invoke(this, new SaveGameArgs(FirstPlayer, SecondPlayer, CurrentPlayer, Timer, Board));
+        }
+
+        private void SaveGame(object sender, SaveGameArgs e)
+        {
+            Saver.SaveUnendedgame(e);
         }
     }
 }

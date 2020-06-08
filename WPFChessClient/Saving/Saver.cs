@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPFChessClient.EventArgsClasses;
 using WPFChessClient.Logic;
 using static WPFChessClient.Pages.GamePlayPage;
 
@@ -16,6 +17,8 @@ namespace WPFChessClient.Saving
         private string SubPath;
         private string FilePath;
         private string LeaderTablePath;
+        private string UnendedGamePath;
+
         private FileInfo fileInfo;
         private FileInfo LeaderTableInfo;
 
@@ -150,9 +153,71 @@ namespace WPFChessClient.Saving
             }
         }
 
-        public void SaveUnendedgame() //TO DO
+        public void SaveUnendedgame(SaveGameArgs e) 
         {
+            UnendedGamePath = "../../Saving/Saves/Games/UnfinishedGames/" + FirstPlayer + " vs " + SecondPlayer + " " + e.Timer;
+            DirectoryInfo dirInfo = new DirectoryInfo(UnendedGamePath);
+            dirInfo.Create();
 
+            string firstPlayerPath = UnendedGamePath + "/FirstPlayer.txt";
+            FileInfo firstPlayerInfo = new FileInfo(firstPlayerPath);
+            //firstPlayerInfo.Create();
+            string firstPlayer = JsonConvert.SerializeObject(e.FirstPlayer);
+            using (FileStream fstream = new FileStream(firstPlayerPath, FileMode.Create))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(firstPlayer);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+            }
+
+            string secondPlayerPath = UnendedGamePath + "/SecondPlayer.txt";
+            FileInfo secondPlayerInfo = new FileInfo(secondPlayerPath);
+            //secondPlayerInfo.Create();
+            string secondPlayer = JsonConvert.SerializeObject(e.SecondPlayer);
+            using (FileStream fstream = new FileStream(secondPlayerPath, FileMode.Create))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(secondPlayer);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+            }
+
+            string currentPlayerPath = UnendedGamePath + "/CurrentPlayer.txt";
+            FileInfo currentPlayerInfo = new FileInfo(currentPlayerPath);
+            //currentPlayerInfo.Create();
+            string currentPlayer = JsonConvert.SerializeObject(e.CurrentPlayer);
+            using (FileStream fstream = new FileStream(currentPlayerPath, FileMode.Create))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(currentPlayer);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+            }
+
+            string boardPath = UnendedGamePath + "/Board.txt";
+            FileInfo boardInfo = new FileInfo(boardPath);
+            //boardInfo.Create();
+            string board = JsonConvert.SerializeObject(e.Board);
+            using (FileStream fstream = new FileStream(boardPath, FileMode.Create))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(board);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+            }
+
+            string timerPath = UnendedGamePath + "/Timer.txt";
+            FileInfo timerInfo = new FileInfo(timerPath);
+            //timerInfo.Create();
+            string timer = JsonConvert.SerializeObject(e.Timer);
+            using (FileStream fstream = new FileStream(timerPath, FileMode.Create))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(timer);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+            }
         }
     }
 }

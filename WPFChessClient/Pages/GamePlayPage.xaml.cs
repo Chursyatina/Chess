@@ -28,7 +28,9 @@ namespace WPFChessClient.Pages
     {
         public enum Figures { King, Queen, Bishop, Knight, Rook, Pawn }
         public enum FiguresColor { white, black }
-        public enum MoveResult { Check, CheckMate, StaleMate}
+        public enum MoveResult { Check, CheckMate, StaleMate, Surrender}
+
+        public event EventHandler<GameResultArgs> SurrenderPresed;
 
         Dictionary<char, ImageSource> BoardDisignations;
 
@@ -67,6 +69,7 @@ namespace WPFChessClient.Pages
             TextBlockTimerFirst.Background = Brushes.White;
 
             Exit.Visibility = Visibility.Hidden;
+            SecondPlayerSurrender.Visibility = Visibility.Hidden;
         }
 
         public event EventHandler<IPageArgs> PageChanged;
@@ -405,22 +408,28 @@ namespace WPFChessClient.Pages
             switch (result)
             {
                 case MoveResult.CheckMate:
-                    SetTextGameResult("Мат");
+                    SetTextGameResult("Mate");
                     if (attacker.GetFigureColor() == FiguresColor.black)
-                        SetTextAttacker("Победа чёрных");
-                    else SetTextAttacker("Победа белых");
+                        SetTextAttacker("Black wins");
+                    else SetTextAttacker("White wins");
                     break;
                 case MoveResult.StaleMate:
-                    SetTextGameResult("Пат");
+                    SetTextGameResult("Stale Mate");
                     if (attacker.GetFigureColor() == FiguresColor.black)
-                        SetTextAttacker("Победа чёрных");
-                    else SetTextAttacker("Победа белых");
+                        SetTextAttacker("Black wins");
+                    else SetTextAttacker("White wins");
                     break;
                 case MoveResult.Check:
-                    SetTextGameResult("Шах");
+                    SetTextGameResult("Check");
                     if (attacker.GetFigureColor() == FiguresColor.black)
-                        SetTextAttacker("Белым");
-                    else SetTextAttacker("Чёрным");
+                        SetTextAttacker("White");
+                    else SetTextAttacker("Black");
+                    break;
+                case MoveResult.Surrender:
+                    SetTextGameResult("Surr");
+                    if (attacker.GetFigureColor() == FiguresColor.black)
+                        SetTextAttacker("Black wins");
+                    else SetTextAttacker("White wins");
                     break;
             }
         }
@@ -430,12 +439,12 @@ namespace WPFChessClient.Pages
             switch (looser.GetFigureColor())
             {
                 case FiguresColor.black:
-                    SetTextGameResult("Время");
-                    SetTextAttacker("Победа белых");
+                    SetTextGameResult("Time");
+                    SetTextAttacker("White wins");
                     break;
                 case FiguresColor.white:
-                    SetTextGameResult("Время");
-                    SetTextAttacker("Победа чёрных");
+                    SetTextGameResult("Time");
+                    SetTextAttacker("Black wins");
                     break;
             }
         }
@@ -506,9 +515,52 @@ namespace WPFChessClient.Pages
             Exit.Visibility = Visibility.Visible;
         }
 
+        public void ChangeSurrenderVisibility()
+        {
+            if (FirstPlayerSurrender.Visibility == Visibility.Visible && SecondPlayerSurrender.Visibility == Visibility.Hidden)
+            {
+                MakeSecondPlayerSurrenderVisible();
+                return;
+            }
+            if (SecondPlayerSurrender.Visibility == Visibility.Visible && FirstPlayerSurrender.Visibility == Visibility.Hidden)
+            {
+                MakeFirstPlayerSurrenderVisible();
+                return;
+            }
+        }
+
+        private void MakeFirstPlayerSurrenderVisible()
+        {
+            FirstPlayerSurrender.Visibility = Visibility.Visible;
+            SecondPlayerSurrender.Visibility = Visibility.Hidden;
+        }
+
+        private void MakeSecondPlayerSurrenderVisible()
+        {
+            SecondPlayerSurrender.Visibility = Visibility.Visible;
+            FirstPlayerSurrender.Visibility = Visibility.Hidden;
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            SetTextGameResult("");
+            SetTextAttacker("");
             PageChanged.Invoke(this, new ChangePageArgs(NamePage.MainMenu));
+        }
+
+        private void FirstPlayerSurrender_Click(object sender, RoutedEventArgs e)
+        {
+            SurrenderPresed.Invoke(this, new GameResultArgs(MoveResult.Surrender, new Player(FiguresColor.black, 10)));
+        }
+
+        private void SecondPlayerSurrender_Click(object sender, RoutedEventArgs e)
+        {
+            SurrenderPresed.Invoke(this, new GameResultArgs(MoveResult.Surrender, new Player(FiguresColor.white, 10)));
+        }
+
+        private void SaveUnendedGame_Click(object sender, RoutedEventArgs e)
+        {
+            Presenter.ReactOmGameSaving();
         }
     }
 }

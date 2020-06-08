@@ -64,6 +64,7 @@
     </ApplicationDefinition>
     <Compile Include="EventArgsClasses\ChangePageToGameArgs.cs" />
     <Compile Include="EventArgsClasses\GameResultArgs.cs" />
+    <Compile Include="EventArgsClasses\SaveGameArgs.cs" />
     <Compile Include="Interfaces\IPageArgs.cs" />
     <Compile Include="Logic\Figures\Bishop.cs" />
     <Compile Include="Logic\Figures\Copyer.cs" />

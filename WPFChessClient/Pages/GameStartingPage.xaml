@@ -10,14 +10,14 @@
 
     <Grid>
         <StackPanel Width="300" VerticalAlignment="Center">
-            <TextBlock Margin="0 0 0 10" >Введите имя первого игрока</TextBlock>
+            <TextBlock Margin="0 0 0 10" >First player name (white)</TextBlock>
             <TextBox Name="FirstPlayerNameTexBox" ToolTip="Имя первого игрока" PreviewTextInput="FirstPlayerNameTexBox_PreviewTextInput"  TextChanged="FirstPlayerNameTexBox_TextChanged"></TextBox>
-            <TextBlock Margin="0 20 0 10" >Введите имя второго игрока</TextBlock>
+            <TextBlock Margin="0 20 0 10" >Second player name (black)</TextBlock>
             <TextBox Name="SecondPlayerNameTexBox" ToolTip="Имя второго игрока" PreviewTextInput="SecondPlayerNameTexBox_PreviewTextInput"  TextChanged="SecondPlayerNameTexBox_TextChanged"></TextBox>
-            <TextBlock Margin="0 20 0 10" >Введите время партии (значение от 1 до 30 в минутах) </TextBlock>
+            <TextBlock Margin="0 20 0 10" >Time (from 1 to 30 minutes) </TextBlock>
             <TextBox Name="TimeTextBox" ToolTip="Время" Margin="0 0 0 20" PreviewTextInput="TimeTextBox_PreviewTextInput"  TextChanged="TimeTextBox_TextChanged"></TextBox>
 
-            <Button Click="Button_Click"  Padding="5" VerticalAlignment="Bottom" Margin=" 50"> Начать игру </Button>
+            <Button Click="Button_Click"  Padding="5" VerticalAlignment="Bottom" Margin=" 50"> Start game </Button>
         </StackPanel>
     </Grid>
 </Page>

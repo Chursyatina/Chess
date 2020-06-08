@@ -37,9 +37,11 @@
         </StackPanel>
 
 
-        <TextBlock Name="TextBlockFirstPlayerName" FontSize="30" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Margin="20 10 0 10"></TextBlock>
-        <TextBlock Name="TextBlockSecondPlayerName" FontSize="30" Grid.Column="2" Grid.Row="0" VerticalAlignment="Bottom" Margin="20 10 0 10"></TextBlock>
-        
+        <TextBlock Name="TextBlockFirstPlayerName" FontSize="30" Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Margin="20 0 0 10"></TextBlock>
+        <TextBlock Name="TextBlockSecondPlayerName" FontSize="30" Grid.Column="2" Grid.Row="0" VerticalAlignment="Bottom" Margin="20 10 0 0"></TextBlock>
+
+        <Button Name="SecondPlayerSurrender" FontSize="20" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" Margin="10 10 10 0" Click="SecondPlayerSurrender_Click">Surrender Black</Button>
+        <Button Name="FirstPlayerSurrender" FontSize="20" Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom" Margin="10 0 10 10" Click="FirstPlayerSurrender_Click">Surrender White</Button>
 
 
         <StackPanel Grid.Column="0" Grid.Row="1">
@@ -47,7 +49,9 @@
             <TextBlock Name="TextBlockWinner" Padding="15"  FontSize="26" HorizontalAlignment="Center" ></TextBlock>
         </StackPanel>
 
-        <Button Name="Exit" Grid.Row="3" Padding="15" Width="160" Height="50" Click="Exit_Click"> Выйти в главное меню </Button>
+        <Button Name="Exit" Grid.Row="3" Padding="15" Width="160" Height="50" Click="Exit_Click"> Quit to main menu </Button>
+
+        <Button Name="SaveUnendedGame" Click="SaveUnendedGame_Click" Padding="15" Width="160" Height="50">Save</Button>
 
 
     </Grid>
