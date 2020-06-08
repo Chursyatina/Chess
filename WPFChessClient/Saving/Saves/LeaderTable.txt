@@ -1,0 +1,1 @@
+[{"Name":"Максим","Wins":5,"Games":5},{"Name":"Алёна","Wins":0,"Games":5},{"Name":"Даниил","Wins":1,"Games":3},{"Name":"Женя","Wins":0,"Games":2},{"Name":"Пашка","Wins":100,"Games":101}]

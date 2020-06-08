@@ -47,6 +47,8 @@
             <TextBlock Name="TextBlockWinner" Padding="15"  FontSize="26" HorizontalAlignment="Center" ></TextBlock>
         </StackPanel>
 
+        <Button Name="Exit" Grid.Row="3" Padding="15" Width="160" Height="50" Click="Exit_Click"> Выйти в главное меню </Button>
+
 
     </Grid>
 </Page>

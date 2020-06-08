@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using WPFChessClient.EventArgsClasses;
 using WPFChessClient.Pages;
+using WPFChessClient.Saving;
 using WPFChessClient.Structures;
 using static WPFChessClient.Pages.GamePlayPage;
 
@@ -24,6 +25,8 @@ namespace WPFChessClient.Logic
         private Point SelectedFigurePosition;
 
         private FigureMoving FigureMoving;
+
+        private Saver Saver;
 
         private Player FirstPlayer;
 
@@ -50,7 +53,7 @@ namespace WPFChessClient.Logic
             EditedCells = new List<Point>();
             SelectedFigurePosition = new Point(-1, -1);
             FigureMoving = new FigureMoving(Board);
-            PlayerTime = time * 60;
+            PlayerTime = time;
             FirstPlayer = new Player(FiguresColor.white, PlayerTime);
             SecondPlayer = new Player(FiguresColor.black, PlayerTime);
             FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
@@ -66,18 +69,24 @@ namespace WPFChessClient.Logic
             FigureMoving.MoveDone += ReactMoveResult;
             Page.SetTextTimerFirst(TimeToString(CurrentPlayer.Time));
             Page.SetTextTimerSecond(TimeToString(CurrentPlayer.Time));
+            Saver = new Saver(Page.FirstPlayerName,Page.SecondPlayerName,Page.Time);
         }
 
         private void FirstPlayer_TimeIsUp(object sender, EventArgs e)
         {
+            FirstPlayer.GetWin();
+            MakeMatchEnded();
             Page.SetTimesUpResult(CurrentPlayer);
             Timer.Stop();
         }
 
         private void SecondPlayer_TimeIsUp(object sender, EventArgs e)
         {
+            SecondPlayer.GetWin();
+            MakeMatchEnded();
             Page.SetTimesUpResult(CurrentPlayer);
             Timer.Stop();
+
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -223,7 +232,13 @@ namespace WPFChessClient.Logic
         {
             Page.SetMoveResult(result.MoveResult, result.Attacker);
             Timer.Stop();
+            MakeMatchEnded();
+        }
+        private void MakeMatchEnded()
+        {
             MatchEnded = true;
+            Saver.SaveEndedGame(FirstPlayer,SecondPlayer);
+            Page.MakeExitVisible();
         }
     }
 }

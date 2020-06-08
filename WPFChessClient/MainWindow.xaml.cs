@@ -22,7 +22,8 @@ namespace WPFChessClient
     {
         GamePlay,
         MainMenu,
-        StartigGamePage
+        StartigGamePage,
+        LeaderTablePage
     }
 
     public partial class MainWindow : Window
@@ -51,6 +52,7 @@ namespace WPFChessClient
             Pages.Add(NamePage.GamePlay, new GamePlayPage());
             Pages.Add(NamePage.MainMenu, new MainMenuPage());
             Pages.Add(NamePage.StartigGamePage, new GameStartingPage());
+            Pages.Add(NamePage.LeaderTablePage, new LeaderTablePage());
 
             foreach(KeyValuePair<NamePage, IPageChanger> page in Pages)
             {

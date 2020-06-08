@@ -14,6 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFChessClient.EventArgsClasses;
 using WPFChessClient.Interfaces;
+using WPFChessClient.Logic;
+using WPFChessClient.Saving;
+using static WPFChessClient.Pages.GamePlayPage;
 
 namespace WPFChessClient.Pages
 {
@@ -27,10 +30,10 @@ namespace WPFChessClient.Pages
 
         private int Time;
 
+
         public GameStartingPage()
         {
             InitializeComponent();
-            
         }
 
         public event EventHandler<IPageArgs> PageChanged;
@@ -64,6 +67,9 @@ namespace WPFChessClient.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             PageChanged.Invoke(this, new ChangePageToGameArgs(NamePage.GamePlay, FirstPlayerName, SecondPlayerName, Time));
+            FirstPlayerNameTexBox.Clear();
+            SecondPlayerNameTexBox.Clear();
+            TimeTextBox.Clear();
         }
 
         private void TimeTextBox_TextChanged(object sender, TextChangedEventArgs e)

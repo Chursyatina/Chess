@@ -65,13 +65,15 @@ namespace WPFChessClient.Pages
 
             //Presenter = new Presenter(this, Time);
             TextBlockTimerFirst.Background = Brushes.White;
+
+            Exit.Visibility = Visibility.Hidden;
         }
 
         public event EventHandler<IPageArgs> PageChanged;
 
-        private string FirstPlayerName;
-        private string SecondPlayerName;
-        private int Time;
+        public string FirstPlayerName { get; private set; }
+        public string SecondPlayerName { get; private set; }
+        public int Time { get; private set; }
 
         public void SetData(string firstPlayerName, string secondPlayerName, int time)
         {
@@ -497,6 +499,16 @@ namespace WPFChessClient.Pages
         private Point RevercePointCoordinate(Point position)
         {
             return new Point(7 - position.X, 7 - position.Y);
+        }
+
+        public void MakeExitVisible()
+        {
+            Exit.Visibility = Visibility.Visible;
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.MainMenu));
         }
     }
 }

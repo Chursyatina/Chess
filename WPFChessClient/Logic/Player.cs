@@ -16,6 +16,7 @@ namespace WPFChessClient.Logic
         private bool ShortCastleAbility;
         private bool LongCastleAbility;
         private bool isCheck;
+        private bool isWinner;
 
         private int time;
         public int Time
@@ -38,6 +39,12 @@ namespace WPFChessClient.Logic
             LongCastleAbility = true;
             isCheck = false;
             Time = time;
+            isWinner = false;
+        }
+
+        public Player()
+        {
+
         }
 
         public FiguresColor GetFigureColor()
@@ -77,6 +84,17 @@ namespace WPFChessClient.Logic
         public void RemoveCheck()
         {
             isCheck = false;
+        }
+
+        public bool CheckWin()
+        {
+            return isWinner;
+        }
+
+        public void GetWin()
+        {
+            isWinner = true;
+
         }
     }
 }

@@ -51,5 +51,10 @@ namespace WPFChessClient.Pages
         {
             PageChanged.Invoke(this, new ChangePageArgs(NamePage.StartigGamePage));
         }
+
+        private void LeaderTable_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.LeaderTablePage));
+        }
     }
 }

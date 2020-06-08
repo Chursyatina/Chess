@@ -280,12 +280,14 @@ namespace WPFChessClient.Logic
                     if (uncurrentPlayer.GetCheckInfo())
                     {
                         GameResultArgs mate = new GameResultArgs(MoveResult.CheckMate, currentPlayer);
+                        currentPlayer.GetWin();
                         MoveDone.Invoke(this, mate);
                         return LogicBoard;
                     }
                     else
                     {
                         GameResultArgs staleMate = new GameResultArgs(MoveResult.StaleMate, currentPlayer);
+                        currentPlayer.GetWin();
                         MoveDone.Invoke(this, staleMate);
                         return LogicBoard;
                     }

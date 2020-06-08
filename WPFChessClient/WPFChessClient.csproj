@@ -38,6 +38,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -72,6 +75,11 @@
     <Compile Include="Pages\GameStartingPage.xaml.cs">
       <DependentUpon>GameStartingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\LeaderTablePage.xaml.cs">
+      <DependentUpon>LeaderTablePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Saving\LeaderTablePlayer.cs" />
+    <Compile Include="Saving\Saver.cs" />
     <Compile Include="Structures\Move.cs" />
     <Compile Include="Logic\Figures\Pawn.cs" />
     <Compile Include="Logic\Player.cs" />
@@ -98,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\GameStartingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LeaderTablePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,6 +142,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

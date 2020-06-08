@@ -38,3 +38,8 @@ C:\Университет\Программирование\OffProd\Chess\WPFChes
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.pdb
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\GameStartingPage.g.cs
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\GameStartingPage.baml
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\bin\Debug\Newtonsoft.Json.dll
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\bin\Debug\Newtonsoft.Json.xml
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.csproj.CopyComplete
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\LeaderTablePage.g.cs
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\LeaderTablePage.baml
