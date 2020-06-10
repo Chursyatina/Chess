@@ -491,6 +491,7 @@ namespace WPFChessClient.Pages
                     else SetTextAttacker("White wins");
                     break;
             }
+            SaveUnendedGame.Visibility = Visibility.Hidden;
         }
 
         public void SetTimesUpResult(Player looser)

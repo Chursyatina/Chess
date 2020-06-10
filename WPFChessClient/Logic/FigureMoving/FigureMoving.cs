@@ -34,7 +34,7 @@ namespace WPFChessClient.Logic
             validMoves = board[(int)position.Y, (int)position.X].GetPossibleMoves(position);
             validMoves = FindValidMoves(position, validMoves, currentPlayer, board);
             validMoves = CheckShahExists(validMoves, position, currentPlayer, unabledPlayer, board);
-
+           
             return validMoves;
         }
 
@@ -241,11 +241,23 @@ namespace WPFChessClient.Logic
                 Figure[,] possibleBoard = Copyer.GetCopy(board);
                 possibleBoard[(int)move.Y, (int)move.X] = possibleBoard[(int)position.Y, (int)position.X];
                 possibleBoard[(int)position.Y, (int)position.X] = null;
-                if (!CheckShah(possibleBoard, checkPlayer, secondPlayer))
+
+                if (!checkPlayer.GetCheckInfo())
                 {
-                    checkPlayer.RemoveCheck();
-                    validMoves.Add(move);
+                    if (!OnlyTrueFalseCheckShah(possibleBoard, checkPlayer, secondPlayer))
+                    {
+                        validMoves.Add(move);
+                    }
                 }
+                else
+                {
+                    if (!CheckShah(possibleBoard, checkPlayer, secondPlayer))
+                    {
+                        //checkPlayer.RemoveCheck();
+                        validMoves.Add(move);
+                    }
+                }
+                
             }
             return validMoves;
         }
@@ -424,6 +436,32 @@ namespace WPFChessClient.Logic
                                 board[(int)move.Y, (int)move.X].Color == checkPlayer.GetFigureColor())
                             {
                                 checkPlayer.GiveCheck();
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool OnlyTrueFalseCheckShah(Figure[,] board, Player checkPlayer, Player secondPlayer)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[j, i] != null &&
+                        board[j, i].Color != checkPlayer.GetFigureColor())
+                    {
+                        List<Point> possibleFigureMoves = board[j, i].GetPossibleMoves(new Point(i, j));
+                        possibleFigureMoves = FindValidMoves(new Point(i, j), possibleFigureMoves, secondPlayer, board);
+                        foreach (Point move in possibleFigureMoves)
+                        {
+                            if (board[(int)move.Y, (int)move.X] != null &&
+                                board[(int)move.Y, (int)move.X].GetType() == Figures.King &&
+                                board[(int)move.Y, (int)move.X].Color == checkPlayer.GetFigureColor())
+                            {
                                 return true;
                             }
                         }
