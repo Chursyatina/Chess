@@ -349,8 +349,8 @@ namespace WPFChessClient.Logic
                 LastMove.EndPosition.X <= 5 &&
                 LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 2] != null)
             {
-                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2] = LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 2];
-                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 2] = null;
+                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 1] = LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2];
+                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2] = null;
                 return;
             }
             if (Math.Abs(LastMove.StartPosition.X - LastMove.EndPosition.X) == 2 &&
@@ -366,7 +366,7 @@ namespace WPFChessClient.Logic
                 LastMove.EndPosition.X >= 2 &&
                 LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2] != null)
             {
-                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 2] = LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2];
+                LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X + 1] = LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2];
                 LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X - 2] = null;
                 return;
             }

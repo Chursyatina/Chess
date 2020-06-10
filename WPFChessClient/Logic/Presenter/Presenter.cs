@@ -55,7 +55,7 @@ namespace WPFChessClient.Logic
             EditedCells = new List<Point>();
             SelectedFigurePosition = new Point(-1, -1);
             FigureMoving = new FigureMoving(Board);
-            PlayerTime = time;
+            PlayerTime = time*60;
             FirstPlayer = new Player(FiguresColor.white, PlayerTime);
             SecondPlayer = new Player(FiguresColor.black, PlayerTime);
             FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
@@ -277,9 +277,9 @@ namespace WPFChessClient.Logic
             MakeMatchEnded();
         }
 
-        private void ReactSurrender(object sender, GameResultArgs result)
+        private void ReactSurrender(MoveResult moveResult, Player player)
         {
-            Page.SetMoveResult(result.MoveResult, result.Attacker);
+            Page.SetMoveResult(moveResult, player);
             Timer.Stop();
             MakeMatchEnded();
         }

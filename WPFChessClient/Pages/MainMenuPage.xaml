@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel  Height="400" MaxWidth="600" Grid.Column="1">
-            <Button x:Name="StartOnePlayerGame" Click="StartOnePlayerGame_Click"  Padding="10" Content="Start One Player Game" Margin="30"/>
+            <Button x:Name="StartOnePlayerGame" Click="StartOnePlayerGame_Click"  Padding="10" Content="Start Game" Margin="30"/>
             <Button x:Name="LeaderTable" Click="LeaderTable_Click" Padding="10" Content ="LeaderTable" Margin="30"/>
             <Button x:Name="DownloadMatch"  Padding="10" Content ="Download Match" Margin="30" Click="DownloadMatch_Click"/>
             <Button x:Name="Exit" Click="Exit_Click"  Padding="10" Content="Exit" Margin="30"/>

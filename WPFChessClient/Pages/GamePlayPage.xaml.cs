@@ -30,7 +30,9 @@ namespace WPFChessClient.Pages
         public enum FiguresColor { white, black }
         public enum MoveResult { Check, CheckMate, StaleMate, Surrender}
 
-        public event EventHandler<GameResultArgs> SurrenderPresed;
+        public delegate void SurrenderHandler(MoveResult moveResult, Player attacker);
+
+        public event SurrenderHandler SurrenderPresed;
 
         Dictionary<char, ImageSource> BoardDisignations;
 
@@ -144,6 +146,10 @@ namespace WPFChessClient.Pages
         public void Start()
         {
             Presenter.CanvasUpdated();
+            TextBlockTimerFirst.Background = Brushes.White;
+
+            Exit.Visibility = Visibility.Hidden;
+            SecondPlayerSurrender.Visibility = Visibility.Hidden;
         }
 
         public void UpdateCanvas()
@@ -603,12 +609,12 @@ namespace WPFChessClient.Pages
 
         private void FirstPlayerSurrender_Click(object sender, RoutedEventArgs e)
         {
-            SurrenderPresed.Invoke(this, new GameResultArgs(MoveResult.Surrender, new Player(FiguresColor.black, 10)));
+            SurrenderPresed.Invoke(MoveResult.Surrender, new Player(FiguresColor.black, 10));
         }
 
         private void SecondPlayerSurrender_Click(object sender, RoutedEventArgs e)
         {
-            SurrenderPresed.Invoke(this, new GameResultArgs(MoveResult.Surrender, new Player(FiguresColor.white, 10)));
+            SurrenderPresed.Invoke(MoveResult.Surrender, new Player(FiguresColor.white, 10));
         }
 
         private void SaveUnendedGame_Click(object sender, RoutedEventArgs e)
