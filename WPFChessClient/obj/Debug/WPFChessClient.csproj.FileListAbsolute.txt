@@ -43,3 +43,9 @@ C:\Университет\Программирование\OffProd\Chess\WPFChes
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\WPFChessClient.csproj.CopyComplete
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\LeaderTablePage.g.cs
 C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\LeaderTablePage.baml
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\AboutPage.g.cs
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\AboutPage.baml
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\HelpPage.g.cs
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\HelpPage.baml
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\UnendedGameStartingPage.g.cs
+C:\Университет\Программирование\OffProd\Chess\WPFChessClient\obj\Debug\Pages\UnendedGameStartingPage.baml

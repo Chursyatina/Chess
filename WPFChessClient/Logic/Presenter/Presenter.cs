@@ -76,6 +76,43 @@ namespace WPFChessClient.Logic
             Saver = new Saver(Page.FirstPlayerName,Page.SecondPlayerName,Page.Time);
         }
 
+        public Presenter(GamePlayPage gameplayPage, Player firstPlayer, Player secondPlayer, Player currentPlayer, Figure[,] board)
+        {
+            Page = gameplayPage;
+            Board = Copyer.GetCopy(board);
+            EditedCells = new List<Point>();
+            SelectedFigurePosition = new Point(-1, -1);
+            FigureMoving = new FigureMoving(Board);
+            //PlayerTime = time;
+            FirstPlayer = new Player(FiguresColor.white, firstPlayer.Time);
+            SecondPlayer = new Player(FiguresColor.black, SecondPlayer.Time);
+            FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
+            SecondPlayer.TimeIsUp += SecondPlayer_TimeIsUp;
+            if (currentPlayer == firstPlayer)
+            {
+                CurrentPlayer = FirstPlayer;
+                UnabledPlayer = SecondPlayer;
+            }
+            else
+            {
+                CurrentPlayer = SecondPlayer;
+                UnabledPlayer = FirstPlayer;
+            }
+            LastMove.SetStartPosition(new Point(0, 0));
+            LastMove.SetEndPosition(new Point(0, 0));
+            LastMove.SetFigure(Figures.Pawn);
+            Timer = new DispatcherTimer();
+            Timer.Interval = new TimeSpan(10000000);
+            Timer.Tick += Timer_Tick;
+            FigureMoving.MoveDone += ReactMoveResult;
+            Page.SurrenderPresed += ReactSurrender;
+            Page.SetTextTimerFirst(TimeToString(CurrentPlayer.Time));
+            Page.SetTextTimerSecond(TimeToString(CurrentPlayer.Time));
+            SavePressed += SaveGame;
+            Saver = new Saver(Page.FirstPlayerName, Page.SecondPlayerName, FirstPlayer.Time);
+        }
+
+
         private void FirstPlayer_TimeIsUp(object sender, EventArgs e)
         {
             FirstPlayer.GetWin();

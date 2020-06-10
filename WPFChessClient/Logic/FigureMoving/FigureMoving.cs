@@ -299,8 +299,11 @@ namespace WPFChessClient.Logic
 
         private void ChangeFigurePosition(Point startPosition, Point endPosition)
         {
-            LogicBoard[(int)endPosition.Y, (int)endPosition.X] = LogicBoard[(int)startPosition.Y, (int)startPosition.X];
-            LogicBoard[(int)startPosition.Y, (int)startPosition.X] = null;
+            if (LogicBoard[(int)startPosition.Y, (int)startPosition.X] != null)
+            {
+                LogicBoard[(int)endPosition.Y, (int)endPosition.X] = LogicBoard[(int)startPosition.Y, (int)startPosition.X];
+                LogicBoard[(int)startPosition.Y, (int)startPosition.X] = null;
+            }
         }
 
         private void RemoveEatenFigure(Point removePosition)
@@ -327,6 +330,7 @@ namespace WPFChessClient.Logic
             {
                 LogicBoard[(int)LastMove.EndPosition.Y, (int)LastMove.EndPosition.X] =
                     new Queen(Figures.Queen, LogicBoard[(int)LastMove.StartPosition.Y, (int)LastMove.StartPosition.X].Color);
+                LogicBoard[(int)LastMove.StartPosition.Y, (int)LastMove.StartPosition.X] = null;
             }
         }
 

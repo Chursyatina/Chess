@@ -66,6 +66,9 @@ namespace WPFChessClient.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (FirstPlayerName == null) FirstPlayerName = "WhitePlayer";
+            if (SecondPlayerName == null) SecondPlayerName = "BlackPlayer";
+            if (Time == 0) Time = 30;
             PageChanged.Invoke(this, new ChangePageToGameArgs(NamePage.GamePlay, FirstPlayerName, SecondPlayerName, Time));
             FirstPlayerNameTexBox.Clear();
             SecondPlayerNameTexBox.Clear();
@@ -85,6 +88,14 @@ namespace WPFChessClient.Pages
         private void FirstPlayerNameTexBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            FirstPlayerNameTexBox.Clear();
+            SecondPlayerNameTexBox.Clear();
+            TimeTextBox.Clear();
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.MainMenu));
         }
     }
 }

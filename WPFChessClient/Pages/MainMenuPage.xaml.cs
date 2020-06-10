@@ -36,11 +36,6 @@ namespace WPFChessClient.Pages
            
         }
 
-        private void StartMultiplayerGame_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             MainWindow = MainWindow.GetInstance();
@@ -55,6 +50,21 @@ namespace WPFChessClient.Pages
         private void LeaderTable_Click(object sender, RoutedEventArgs e)
         {
             PageChanged.Invoke(this, new ChangePageArgs(NamePage.LeaderTablePage));
+        }
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.AboutPage));
+        }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.HelpPage));
+        }
+
+        private void DownloadMatch_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.UnendedGameStatringPage));
         }
     }
 }

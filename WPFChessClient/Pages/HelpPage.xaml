@@ -1,0 +1,41 @@
+﻿<Page x:Class="WPFChessClient.Pages.HelpPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WPFChessClient.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HelpPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Background="Transparent" FontSize="90" HorizontalAlignment="Center" VerticalAlignment="Center">Home Chess</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="1" Background="Transparent" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center">Help Page</TextBlock>
+
+        <StackPanel Grid.Column="0" Grid.Row="2" Grid.RowSpan="2">
+            <TextBlock Background="Transparent" FontSize="17" TextWrapping="Wrap" Grid.Column="0" > Для взаимодействия с программой используется манипулятор мышь и клавиатура.</TextBlock>
+            <TextBlock Background="Transparent" FontSize="17" TextWrapping="Wrap" Grid.Column="0" >Для взаимодействия с кнопками требуется нажать ЛКМ по соответствующей кнопке. Для ввода имён и времени в поля перед началом игры, требуется нажать ЛКМ на соответсвующие поля 
+        и ввести данные при помощи клавиатуры.</TextBlock>
+            <TextBlock Background="Transparent" FontSize="17" TextWrapping="Wrap" Grid.Column="0" >Для того что бы сделать ход требуется кликнуть ЛКМ на свою фигу, а после кликнуть ЛКМ на одно из подсвеченных полей (возможные ходы).</TextBlock>
+            <TextBlock Background="Transparent" FontSize="17" TextWrapping="Wrap" Grid.Column="0" > В случае окончания игры вы увидите сообщение в левой части окна, а под ним появится кнопка выхода в главное меню.</TextBlock>
+
+        </StackPanel>
+
+        <Button Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" Margin=" 0 0 0 20" Click="QuitButton_Click" Height="40">Quit to main menu</Button>
+
+        <Image Source="/Resources/Figures/bQ.png" Grid.Column="1" Grid.RowSpan="3"/>
+
+    </Grid>
+</Page>

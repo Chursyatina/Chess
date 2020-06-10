@@ -37,13 +37,18 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Bishop.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EventArgsClasses\ChangePageToGameArgs.cs" />
+    <Compile Include="EventArgsClasses\ChangePageToUnendedGameArgs.cs" />
     <Compile Include="EventArgsClasses\GameResultArgs.cs" />
     <Compile Include="EventArgsClasses\SaveGameArgs.cs" />
     <Compile Include="Interfaces\IPageArgs.cs" />
@@ -73,11 +79,20 @@
     <Compile Include="Logic\Figures\FiguresStartPosition.cs" />
     <Compile Include="Logic\Figures\King.cs" />
     <Compile Include="Logic\Figures\Knight.cs" />
+    <Compile Include="Pages\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\GameStartingPage.xaml.cs">
       <DependentUpon>GameStartingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HelpPage.xaml.cs">
+      <DependentUpon>HelpPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\LeaderTablePage.xaml.cs">
       <DependentUpon>LeaderTablePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UnendedGameStartingPage.xaml.cs">
+      <DependentUpon>UnendedGameStartingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Saving\LeaderTablePlayer.cs" />
     <Compile Include="Saving\Saver.cs" />
@@ -102,6 +117,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\GamePlayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,11 +129,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\HelpPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\LeaderTablePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MainMenuPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\UnendedGameStartingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,6 +222,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Table.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Ico\Bishop.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Bishop.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

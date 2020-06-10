@@ -72,6 +72,31 @@ namespace WPFChessClient.Pages
             SecondPlayerSurrender.Visibility = Visibility.Hidden;
         }
 
+        public GamePlayPage(Player FirstPlayer, Player SecondPlayer, Player CurrentPlayer)
+        {
+            InitializeComponent();
+
+            Drawable = new List<UIElement>();
+
+            BoardDisignations = CreateBoardDisignations();
+            BlackFigures = BlackDictionaryFilling();
+            WhiteFigures = WhiteDictionaryFilling();
+
+            //Presenter = new Presenter(this, Time);
+            TextBlockTimerFirst.Background = Brushes.White;
+
+            Exit.Visibility = Visibility.Hidden;
+            if (CurrentPlayer == FirstPlayer)
+            {
+                SecondPlayerSurrender.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                FirstPlayerSurrender.Visibility = Visibility.Hidden;
+            }
+        }
+
+
         public event EventHandler<IPageArgs> PageChanged;
 
         public string FirstPlayerName { get; private set; }
@@ -84,6 +109,23 @@ namespace WPFChessClient.Pages
             SecondPlayerName = secondPlayerName;
             Time = time;
             Presenter = new Presenter(this, Time);
+            SetTextFirstPlayerName(FirstPlayerName);
+            SetTextSecondPlayerName(SecondPlayerName);
+        }
+
+        public Player FirstPlayer;
+
+        public Player SecondPlayer;
+
+        public Figure[,] Board;
+
+        public Player CurrentPlayer;
+
+        public void SetUnendedGameData(string firstPlayerName, string secondPlayerName, Player FirstPlayer, Player SecondPlayer, Figure[,] Board, Player CurrentPlayer)
+        {
+            FirstPlayerName = firstPlayerName;
+            SecondPlayerName = secondPlayerName;
+            Presenter = new Presenter(this, FirstPlayer, SecondPlayer, CurrentPlayer, Board);
             SetTextFirstPlayerName(FirstPlayerName);
             SetTextSecondPlayerName(SecondPlayerName);
         }
@@ -561,6 +603,9 @@ namespace WPFChessClient.Pages
         private void SaveUnendedGame_Click(object sender, RoutedEventArgs e)
         {
             Presenter.ReactOmGameSaving();
+            SetTextGameResult("");
+            SetTextAttacker("");
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.MainMenu));
         }
     }
 }

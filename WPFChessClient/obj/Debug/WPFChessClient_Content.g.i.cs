@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/1.svg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("bishop.ico")]
 
 

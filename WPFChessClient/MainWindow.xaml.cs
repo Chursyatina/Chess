@@ -23,7 +23,10 @@ namespace WPFChessClient
         GamePlay,
         MainMenu,
         StartigGamePage,
-        LeaderTablePage
+        LeaderTablePage,
+        AboutPage,
+        HelpPage,
+        UnendedGameStatringPage
     }
 
     public partial class MainWindow : Window
@@ -53,6 +56,9 @@ namespace WPFChessClient
             Pages.Add(NamePage.MainMenu, new MainMenuPage());
             Pages.Add(NamePage.StartigGamePage, new GameStartingPage());
             Pages.Add(NamePage.LeaderTablePage, new LeaderTablePage());
+            Pages.Add(NamePage.AboutPage, new AboutPage());
+            Pages.Add(NamePage.HelpPage, new HelpPage());
+            Pages.Add(NamePage.UnendedGameStatringPage, new UnendedGameStartingPage());
 
             foreach(KeyValuePair<NamePage, IPageChanger> page in Pages)
             {
@@ -65,6 +71,11 @@ namespace WPFChessClient
             if (e is ChangePageToGameArgs && Pages[e.Name] is GamePlayPage)
             {
                 ((GamePlayPage)Pages[e.Name]).SetData(((ChangePageToGameArgs)e).FirstPlayerName, ((ChangePageToGameArgs)e).SecondPlayerName, ((ChangePageToGameArgs)e).GameTime);
+            }
+
+            if (e is ChangePageToUnendedGameArgs && Pages[e.Name] is GamePlayPage)
+            {
+                ((GamePlayPage)Pages[e.Name]).SetUnendedGameData(((ChangePageToUnendedGameArgs)e).FirstPlayerName, ((ChangePageToUnendedGameArgs)e).SecondPlayerName, ((ChangePageToUnendedGameArgs)e).FirstPlayer, ((ChangePageToUnendedGameArgs)e).SecondPlayer, ((ChangePageToUnendedGameArgs)e).Board, ((ChangePageToUnendedGameArgs)e).CurrentPlayer);
             }
             Pages[e.Name].Start();
             MainFrame.Navigate(Pages[e.Name]);

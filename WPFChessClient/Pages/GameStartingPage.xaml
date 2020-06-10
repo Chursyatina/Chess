@@ -9,15 +9,25 @@
       Title="GameStartingPage">
 
     <Grid>
-        <StackPanel Width="300" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel  VerticalAlignment="Center" Grid.Column="1">
             <TextBlock Margin="0 0 0 10" >First player name (white)</TextBlock>
             <TextBox Name="FirstPlayerNameTexBox" ToolTip="Имя первого игрока" PreviewTextInput="FirstPlayerNameTexBox_PreviewTextInput"  TextChanged="FirstPlayerNameTexBox_TextChanged"></TextBox>
             <TextBlock Margin="0 20 0 10" >Second player name (black)</TextBlock>
             <TextBox Name="SecondPlayerNameTexBox" ToolTip="Имя второго игрока" PreviewTextInput="SecondPlayerNameTexBox_PreviewTextInput"  TextChanged="SecondPlayerNameTexBox_TextChanged"></TextBox>
-            <TextBlock Margin="0 20 0 10" >Time (from 1 to 30 minutes) </TextBlock>
+            <TextBlock Margin="0 20 0 10" >Time (from 1 to 30 minutes)</TextBlock>
             <TextBox Name="TimeTextBox" ToolTip="Время" Margin="0 0 0 20" PreviewTextInput="TimeTextBox_PreviewTextInput"  TextChanged="TimeTextBox_TextChanged"></TextBox>
 
-            <Button Click="Button_Click"  Padding="5" VerticalAlignment="Bottom" Margin=" 50"> Start game </Button>
+            <Button Click="Button_Click"  Padding="5" VerticalAlignment="Bottom" Margin="0 40 0 20">Start game</Button>
+            <Button Click="Button_Click_1"  Padding="5" VerticalAlignment="Bottom" Margin="0 40 0 20">Back to main menu</Button>
         </StackPanel>
+
+        <Image  VerticalAlignment="Center" HorizontalAlignment="Center"  Source="/Resources/Figures/wR.png" Grid.Column="2"></Image>
+        <Image  VerticalAlignment="Center" HorizontalAlignment="Center"  FlowDirection="RightToLeft" Source="/Resources/Figures/bR.png" Grid.Column="0"></Image>
     </Grid>
 </Page>
