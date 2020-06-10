@@ -70,6 +70,8 @@ namespace WPFChessClient.Pages
 
             Exit.Visibility = Visibility.Hidden;
             SecondPlayerSurrender.Visibility = Visibility.Hidden;
+
+            MainWindow mainWindow = MainWindow.GetInstance();
         }
 
         public GamePlayPage(Player FirstPlayer, Player SecondPlayer, Player CurrentPlayer)
@@ -83,9 +85,17 @@ namespace WPFChessClient.Pages
             WhiteFigures = WhiteDictionaryFilling();
 
             //Presenter = new Presenter(this, Time);
-            TextBlockTimerFirst.Background = Brushes.White;
+            if (CurrentPlayer == FirstPlayer)
+            {
+                TextBlockTimerFirst.Background = Brushes.White;
+            }
+            else
+            {
+                TextBlockTimerSecond.Background = Brushes.White;
+            }
 
             Exit.Visibility = Visibility.Hidden;
+
             if (CurrentPlayer == FirstPlayer)
             {
                 SecondPlayerSurrender.Visibility = Visibility.Hidden;
@@ -125,9 +135,10 @@ namespace WPFChessClient.Pages
         {
             FirstPlayerName = firstPlayerName;
             SecondPlayerName = secondPlayerName;
-            Presenter = new Presenter(this, FirstPlayer, SecondPlayer, CurrentPlayer, Board);
             SetTextFirstPlayerName(FirstPlayerName);
             SetTextSecondPlayerName(SecondPlayerName);
+            Presenter = new Presenter(this, FirstPlayer, SecondPlayer, CurrentPlayer, Board);
+            
         }
 
         public void Start()

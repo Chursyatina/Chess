@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,10 @@ namespace WPFChessClient.Pages
     /// </summary>
     public partial class UnendedGameStartingPage : Page, IPageChanger
     {
+
+        private string SelectedFile;
+        private ListBox listBox;
+
         public UnendedGameStartingPage()
         {
             InitializeComponent();
@@ -38,9 +43,36 @@ namespace WPFChessClient.Pages
         private void ResumeMatch_Click(object sender, RoutedEventArgs e)
         {
             Saver saver = new Saver();
-            ChangePageToUnendedGameArgs args = saver.DowloadUnendedGame();
+            ChangePageToUnendedGameArgs args = saver.DowloadUnendedGame(SelectedFile);
             args.Name = NamePage.GamePlay;
             PageChanged.Invoke(this, args);
+        }
+
+        private void Files_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listBox.SelectedValue == null) return;
+            SelectedFile = (string)listBox.SelectedValue;
+        }
+
+        private void FillList()
+        {
+            Saver saver = new Saver();
+            List<string> names = saver.GetUnendedGamesList();
+
+            Files.ItemsSource = names;
+
+            listBox.SelectedIndex = 0;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            PageChanged.Invoke(this, new ChangePageArgs(NamePage.MainMenu));
+        }
+
+        private void Files_Loaded(object sender, RoutedEventArgs e)
+        {
+            listBox = sender as ListBox;
+            FillList();
         }
     }
 }

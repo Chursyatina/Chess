@@ -243,13 +243,35 @@ namespace WPFChessClient.Saving
             }
         }
 
-        public ChangePageToUnendedGameArgs DowloadUnendedGame()
+        public ChangePageToUnendedGameArgs DowloadUnendedGame(string selectedFile)
         {
             ChangePageToUnendedGameArgs args = new ChangePageToUnendedGameArgs();
 
-            UnendedGamePath = "../../Saving/Saves/Games/UnfinishedGames/WhitePlayer vs BlackPlayer 30-30";
+            //UnendedGamePath = "../../Saving/Saves/Games/UnfinishedGames/WhitePlayer vs BlackPlayer 25-26";
 
-            using (FileStream fstream = File.OpenRead(UnendedGamePath + "/CurrentPlayer.txt"))
+            using (FileStream fstream = File.OpenRead(selectedFile + "/FirstName.txt"))
+            {
+                // преобразуем строку в байты
+                byte[] array = new byte[fstream.Length];
+                // считываем данные
+                fstream.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                string textFromFile = System.Text.Encoding.Default.GetString(array);
+                args.FirstPlayerName = JsonConvert.DeserializeObject<string>(textFromFile);
+            }
+
+            using (FileStream fstream = File.OpenRead(selectedFile + "/SecondName.txt"))
+            {
+                // преобразуем строку в байты
+                byte[] array = new byte[fstream.Length];
+                // считываем данные
+                fstream.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                string textFromFile = System.Text.Encoding.Default.GetString(array);
+                args.SecondPlayerName = JsonConvert.DeserializeObject<string>(textFromFile);
+            }
+
+            using (FileStream fstream = File.OpenRead(selectedFile + "/CurrentPlayer.txt"))
             {
                 // преобразуем строку в байты
                 byte[] array = new byte[fstream.Length];
@@ -260,7 +282,7 @@ namespace WPFChessClient.Saving
                 args.CurrentPlayer = JsonConvert.DeserializeObject<Player>(textFromFile);
             }
             
-            using (FileStream fstream = File.OpenRead(UnendedGamePath + "/FirstPlayer.txt"))
+            using (FileStream fstream = File.OpenRead(selectedFile + "/FirstPlayer.txt"))
             {
                 // преобразуем строку в байты
                 byte[] array = new byte[fstream.Length];
@@ -271,7 +293,7 @@ namespace WPFChessClient.Saving
                 args.FirstPlayer = JsonConvert.DeserializeObject<Player>(textFromFile);
             }
 
-            using (FileStream fstream = File.OpenRead(UnendedGamePath + "/SecondPlayer.txt"))
+            using (FileStream fstream = File.OpenRead(selectedFile + "/SecondPlayer.txt"))
             {
                 // преобразуем строку в байты
                 byte[] array = new byte[fstream.Length];
@@ -282,7 +304,7 @@ namespace WPFChessClient.Saving
                 args.SecondPlayer = JsonConvert.DeserializeObject<Player>(textFromFile);
             }
 
-            using (FileStream fstream = File.OpenRead(UnendedGamePath + "/Board.txt"))
+            using (FileStream fstream = File.OpenRead(selectedFile + "/Board.txt"))
             {
                 // преобразуем строку в байты
                 byte[] array = new byte[fstream.Length];
@@ -305,56 +327,56 @@ namespace WPFChessClient.Saving
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if (board[i,j].Name == Figures.King && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i,j].Name == Figures.King && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 3;
                     }
-                    if (board[i, j].Name == Figures.King && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.King && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 4;
                     }
 
-                    if (board[i, j].Name == Figures.Pawn && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Pawn && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 1;
                     }
-                    if (board[i, j].Name == Figures.Pawn && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Pawn && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 2;
                     }
 
-                    if (board[i, j].Name == Figures.Bishop && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Bishop && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 5;
                     }
-                    if (board[i, j].Name == Figures.Bishop && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Bishop && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 6;
                     }
 
-                    if (board[i, j].Name == Figures.Queen && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Queen && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 7;
                     }
-                    if (board[i, j].Name == Figures.Queen && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Queen && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 8;
                     }
 
-                    if (board[i, j].Name == Figures.Rook && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Rook && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 9;
                     }
-                    if (board[i, j].Name == Figures.Rook && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Rook && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 10;
                     }
 
-                    if (board[i, j].Name == Figures.Knight && board[i, j].Color == FiguresColor.white)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Knight && board[i, j].Color == FiguresColor.white)
                     {
                         intFigures[i, j] = 11;
                     }
-                    if (board[i, j].Name == Figures.Knight && board[i, j].Color == FiguresColor.black)
+                    if (board[i, j] != null && board[i, j].Name == Figures.Knight && board[i, j].Color == FiguresColor.black)
                     {
                         intFigures[i, j] = 12;
                     }
@@ -383,52 +405,77 @@ namespace WPFChessClient.Saving
 
                     if (board[i, j] == 3)
                     {
-                        figures[i, j] = new Pawn(Figures.King, FiguresColor.white);
+                        figures[i, j] = new King(Figures.King, FiguresColor.white);
                     }
                     if (board[i, j] == 4)
                     {
-                        figures[i, j] = new Pawn(Figures.King, FiguresColor.black);
+                        figures[i, j] = new King(Figures.King, FiguresColor.black);
                     }
 
                     if (board[i, j] == 5)
                     {
-                        figures[i, j] = new Pawn(Figures.Bishop, FiguresColor.white);
+                        figures[i, j] = new Bishop(Figures.Bishop, FiguresColor.white);
                     }
                     if (board[i, j] == 6)
                     {
-                        figures[i, j] = new Pawn(Figures.Bishop, FiguresColor.black);
+                        figures[i, j] = new Bishop(Figures.Bishop, FiguresColor.black);
                     }
 
                     if (board[i, j] == 7)
                     {
-                        figures[i, j] = new Pawn(Figures.Queen, FiguresColor.white);
+                        figures[i, j] = new Queen(Figures.Queen, FiguresColor.white);
                     }
                     if (board[i, j] == 8)
                     {
-                        figures[i, j] = new Pawn(Figures.Queen, FiguresColor.black);
+                        figures[i, j] = new Queen(Figures.Queen, FiguresColor.black);
                     }
 
                     if (board[i, j] == 9)
                     {
-                        figures[i, j] = new Pawn(Figures.Rook, FiguresColor.white);
+                        figures[i, j] = new Rook(Figures.Rook, FiguresColor.white);
                     }
                     if (board[i, j] == 10)
                     {
-                        figures[i, j] = new Pawn(Figures.Rook, FiguresColor.black);
+                        figures[i, j] = new Rook(Figures.Rook, FiguresColor.black);
                     }
 
                     if (board[i, j] == 11)
                     {
-                        figures[i, j] = new Pawn(Figures.Knight, FiguresColor.white);
+                        figures[i, j] = new Knight(Figures.Knight, FiguresColor.white);
                     }
                     if (board[i, j] == 12)
                     {
-                        figures[i, j] = new Pawn(Figures.Knight, FiguresColor.black);
+                        figures[i, j] = new Knight(Figures.Knight, FiguresColor.black);
                     }
                 }
             }
 
             return figures;
+        }
+
+        public List<string> GetUnendedGamesList()
+        {
+            List<string> unendedGames = new List<string>();
+
+            UnendedGamePath = "../../Saving/Saves/Games/UnfinishedGames";
+
+            string[] dirs;
+
+            if (Directory.Exists(UnendedGamePath))
+            {
+                dirs = Directory.GetDirectories(UnendedGamePath);
+            }
+            else
+            {
+                return unendedGames;
+            }
+
+            for (int i = 0; i < dirs.Length; i ++)
+            {
+                unendedGames.Add(dirs[i]);
+            }
+
+                return unendedGames;
         }
     }
 }

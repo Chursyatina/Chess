@@ -85,18 +85,18 @@ namespace WPFChessClient.Logic
             FigureMoving = new FigureMoving(Board);
             //PlayerTime = time;
             FirstPlayer = new Player(FiguresColor.white, firstPlayer.Time);
-            SecondPlayer = new Player(FiguresColor.black, SecondPlayer.Time);
+            SecondPlayer = new Player(FiguresColor.black, secondPlayer.Time);
             FirstPlayer.TimeIsUp += FirstPlayer_TimeIsUp;
             SecondPlayer.TimeIsUp += SecondPlayer_TimeIsUp;
             if (currentPlayer == firstPlayer)
             {
-                CurrentPlayer = FirstPlayer;
-                UnabledPlayer = SecondPlayer;
+                CurrentPlayer = SecondPlayer;
+                UnabledPlayer = FirstPlayer;
             }
             else
             {
-                CurrentPlayer = SecondPlayer;
-                UnabledPlayer = FirstPlayer;
+                CurrentPlayer = FirstPlayer;
+                UnabledPlayer = SecondPlayer;
             }
             LastMove.SetStartPosition(new Point(0, 0));
             LastMove.SetEndPosition(new Point(0, 0));
